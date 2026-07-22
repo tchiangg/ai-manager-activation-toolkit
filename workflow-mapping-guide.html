@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/fabletics-design-system-ce3e2a87-492c-43e5-96a3-7266e28406b4/assets/phosphor/phosphor.css">
+<link rel="stylesheet" href="_ds/fabletics-design-system-ce3e2a87-492c-43e5-96a3-7266e28406b4/styles/colors_and_type.css">
+<link rel="stylesheet" href="_ds/fabletics-design-system-ce3e2a87-492c-43e5-96a3-7266e28406b4/styles/components.css">
+<link rel="stylesheet" href="_ds/fabletics-design-system-ce3e2a87-492c-43e5-96a3-7266e28406b4/styles/components.v2.css">
+<link rel="stylesheet" href="assets/fonts/fabletics-fonts.css">
+<script src="_ds/fabletics-design-system-ce3e2a87-492c-43e5-96a3-7266e28406b4/_ds_bundle.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--color-white); color: var(--color-shadow); font-family: var(--font-family-base);
+    --wmg-accent: #DCEAE6;
+    --wmg-accent-ink: #123B37;
+    --wmg-accent-2: #6E5AA6;
+    --wmg-ink: #16211F;
+  }
+  a { color: var(--wmg-accent-ink); text-decoration: none; }
+  a:hover { color: var(--color-shadow); text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--color-blue); outline-offset: 2px; }
+  p { text-wrap: pretty; }
+  .wmg-dark { background: radial-gradient(120% 95% at 80% -12%, color-mix(in srgb, var(--wmg-accent) 15%, transparent), transparent 55%), var(--wmg-ink); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; animation: none !important; }
+  }
+  @media print {
+    [data-print-hide] { display: none !important; }
+    [data-surface="dark"] { background: #fff !important; color: #000 !important; }
+    [data-surface="dark"] * { color: #000 !important; }
+    [data-stage-detail] { display: block !important; }
+    section { padding: 18px 0 !important; break-inside: avoid; page-break-inside: avoid; }
+    [data-callout], [data-stage], [data-friction-row] { break-inside: avoid; page-break-inside: avoid; }
+    .wmg-hero { min-height: 0 !important; }
+    body { font-size: 12pt; }
+  }
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="font-family: var(--font-family-base); color: var(--color-shadow); max-width: 100%; overflow-x: hidden;">
+
+  <!-- ===== TOP BAR ===== -->
+  <header data-print-hide style="position: sticky; top: 0; z-index: 50; background: var(--color-white); border-bottom: 1px solid var(--color-shadow-15);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 12px clamp(16px,4vw,40px); max-width: 1320px; margin: 0 auto;">
+      <a href="Home.dc.html" style="display: flex; align-items: center; gap: 8px; min-width: 0; color: var(--color-shadow);">
+        <span style="font-weight: 700; letter-spacing: 0.24em; font-size: 15px;">FABLETICS</span>
+        <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 12px; height: 12px; border: 1.5px solid var(--color-shadow); border-radius: 50%;"></span><span style="font-weight: 500; letter-spacing: 0.12em; font-size: 13px; color: var(--color-shadow-70);">OS</span></span>
+      </a>
+      <nav style="display: flex; align-items: center; gap: clamp(10px,2vw,26px); overflow-x: auto; scrollbar-width: none;">
+        <a href="Home.dc.html" style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-shadow-70); white-space: nowrap;"><i class="ph-bold ph-arrow-left"></i> Toolkit</a>
+        <sc-for list="{{ navLinks }}" as="c" hint-placeholder-count="4">
+          <a href="#{{ c.id }}" data-chapter-link="{{ c.id }}" onClick="{{ c.go }}" style="display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-shadow-45); white-space: nowrap; cursor: pointer;">
+            <span data-dot style="width: 6px; height: 6px; border-radius: 50%; background: transparent; transition: background 0.15s;"></span>{{ c.label }}
+          </a>
+        </sc-for>
+        <button onClick="{{ goNotes }}" class="btn btn--link btn--sm" style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;">Notes</button>
+        <button onClick="{{ printGuide }}" class="btn btn--primary btn--sm" style="letter-spacing: 0.08em;"><i class="ph ph-printer" style="font-size: 15px;"></i>Print</button>
+      </nav>
+    </div>
+    <div style="height: 2px; background: var(--color-shadow-10);"><div ref="{{ progressRef }}" style="height: 100%; width: 0%; background: var(--wmg-accent-ink);"></div></div>
+  </header>
+
+  <!-- ===== HERO / HOME ===== -->
+  <section id="home" style="background: linear-gradient(180deg, var(--color-sand-70) 0%, var(--color-white) 100%); padding: clamp(44px,6vw,88px) clamp(20px,6vw,80px) clamp(36px,5vw,64px);">
+    <div style="max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); gap: clamp(32px,5vw,72px); align-items: center;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+          <span style="width: 30px; height: 2px; background: var(--wmg-accent-ink);"></span>
+          <span class="t-eyebrow" style="color: var(--wmg-accent-ink);">Fabletics OS · Manager Toolkit</span>
+        </div>
+        <h1 style="margin: 0; font-weight: 700; font-size: clamp(38px,6vw,72px); line-height: 0.98; letter-spacing: -0.02em;">Lead the work.<br><span style="color: var(--wmg-accent-ink);">Then lead with AI.</span></h1>
+        <p style="margin: 22px 0 0; font-size: clamp(17px,1.8vw,22px); line-height: 1.5; color: var(--color-shadow-80); max-width: 46ch;">A manager's toolkit for turning everyday friction into practical AI improvements. Start with one workflow, learn what works, and repeat — no tooling expertise required.</p>
+        <div style="margin-top: clamp(26px,3vw,36px); display: flex; flex-wrap: wrap; gap: 14px; align-items: center;">
+          <a href="#resources" onClick="{{ goResources }}" class="btn btn--primary" style="letter-spacing: 0.06em;">Browse the toolkit <i class="ph-bold ph-arrow-right" style="font-size: 15px;"></i></a>
+          <a href="#intro" onClick="{{ goGuide }}" class="btn btn--secondary" style="letter-spacing: 0.06em;">Read the guide</a>
+        </div>
+        <div style="margin-top: clamp(24px,3vw,34px); display: flex; flex-wrap: wrap; gap: 10px;">
+          <span style="display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: var(--color-shadow-65); border: 1px solid var(--color-shadow-15); border-radius: 999px; padding: 6px 12px;"><i class="ph ph-signpost" style="font-size: 14px; color: var(--wmg-accent-ink);"></i>3 chapters</span>
+          <span style="display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: var(--color-shadow-65); border: 1px solid var(--color-shadow-15); border-radius: 999px; padding: 6px 12px;"><i class="ph ph-arrows-split" style="font-size: 14px; color: var(--wmg-accent-ink);"></i>5 friction types</span>
+          <span style="display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: var(--color-shadow-65); border: 1px solid var(--color-shadow-15); border-radius: 999px; padding: 6px 12px;"><i class="ph ph-note-pencil" style="font-size: 14px; color: var(--wmg-accent-ink);"></i>Notes worksheet</span>
+        </div>
+      </div>
+
+      <!-- Illustrative loop diagram -->
+      <div class="wmg-dark" style="border-radius: 20px; padding: clamp(22px,2.6vw,34px); color: var(--color-white); border: 1px solid rgba(255,255,255,0.09); box-shadow: 0 30px 70px -34px rgba(6,32,29,0.7);">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px;">
+          <span class="t-eyebrow" style="color: var(--wmg-accent);">The Workflow Mapping Loop</span>
+          <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--color-sand);"><span style="width: 8px; height: 8px; border-radius: 50%; background: var(--wmg-accent);"></span>Start small</span>
+        </div>
+        <div class="t-eyebrow" style="color: var(--color-sand); opacity: 0.75; font-size: 10px; margin-bottom: 8px;">Signals to watch</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px;">
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-sand); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; padding: 4px 9px;">Waiting</span>
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-sand); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; padding: 4px 9px;">Repetition</span>
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-sand); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; padding: 4px 9px;">Rework</span>
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-sand); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; padding: 4px 9px;">Inconsistency</span>
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-sand); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; padding: 4px 9px;">Thinking</span>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+          <div style="display: flex; gap: 14px; align-items: flex-start;">
+            <span style="flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--wmg-accent); color: var(--wmg-ink); font-weight: 700; font-size: 13px;">01</span>
+            <div style="padding-top: 5px;"><div style="font-weight: 700; font-size: clamp(15px,1.5vw,17px); line-height: 1.1;">Find the friction</div><div style="font-size: 12.5px; line-height: 1.35; color: var(--color-sand); opacity: 0.85; margin-top: 3px;">Where time &amp; value leak</div></div>
+          </div>
+          <div style="width: 2px; height: 14px; margin-left: 16px; background: rgba(255,255,255,0.18);"></div>
+          <div style="display: flex; gap: 14px; align-items: flex-start;">
+            <span style="flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--wmg-accent); color: var(--wmg-ink); font-weight: 700; font-size: 13px;">02</span>
+            <div style="padding-top: 5px;"><div style="font-weight: 700; font-size: clamp(15px,1.5vw,17px); line-height: 1.1;">Map what happens</div><div style="font-size: 12.5px; line-height: 1.35; color: var(--color-sand); opacity: 0.85; margin-top: 3px;">The real workflow, not the SOP</div></div>
+          </div>
+          <div style="width: 2px; height: 14px; margin-left: 16px; background: rgba(255,255,255,0.18);"></div>
+          <div style="display: flex; gap: 14px; align-items: flex-start;">
+            <span style="flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--wmg-accent); color: var(--wmg-ink); font-weight: 700; font-size: 13px;">03</span>
+            <div style="padding-top: 5px;"><div style="font-weight: 700; font-size: clamp(15px,1.5vw,17px); line-height: 1.1;">Diagnose the friction</div><div style="font-size: 12.5px; line-height: 1.35; color: var(--color-sand); opacity: 0.85; margin-top: 3px;">Why effort or quality is lost</div></div>
+          </div>
+          <div style="width: 2px; height: 14px; margin-left: 16px; background: rgba(255,255,255,0.18);"></div>
+          <div style="display: flex; gap: 14px; align-items: flex-start;">
+            <span style="flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--wmg-accent); color: var(--wmg-ink); font-weight: 700; font-size: 13px;">04</span>
+            <div style="padding-top: 5px;"><div style="font-weight: 700; font-size: clamp(15px,1.5vw,17px); line-height: 1.1;">Spot the AI opportunity</div><div style="font-size: 12.5px; line-height: 1.35; color: var(--color-sand); opacity: 0.85; margin-top: 3px;">Think in verbs, not tools</div></div>
+          </div>
+          <div style="width: 2px; height: 14px; margin-left: 16px; background: rgba(255,255,255,0.18);"></div>
+          <div style="display: flex; gap: 14px; align-items: flex-start;">
+            <span style="flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--wmg-accent); color: var(--wmg-ink); font-weight: 700; font-size: 13px;">05</span>
+            <div style="padding-top: 5px;"><div style="font-weight: 700; font-size: clamp(15px,1.5vw,17px); line-height: 1.1;">Improve one thing</div><div style="font-size: 12.5px; line-height: 1.35; color: var(--color-sand); opacity: 0.85; margin-top: 3px;">Build confidence, then repeat</div></div>
+          </div>
+        </div>
+        <div style="width: 2px; height: 14px; margin-left: 16px; background: rgba(255,255,255,0.18);"></div>
+        <div style="display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--wmg-ink); background: var(--wmg-accent); padding: 6px 12px; border-radius: 999px;"><i class="ph-bold ph-repeat" style="font-size: 13px;"></i> Repeat with the next workflow</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== A. SERIES INTRO + GUIDE SELECTOR ===== -->
+  <section id="intro" style="padding: clamp(56px,8vw,110px) clamp(20px,6vw,80px);">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 28px;">
+        <span style="width: 30px; height: 2px; background: var(--wmg-accent-ink);"></span>
+        <span class="t-eyebrow" style="color: var(--wmg-accent-ink);">Manager Guides for AI-Enabled Leadership</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(28px,5vw,72px); align-items: start;">
+        <h1 style="margin: 0; font-weight: 700; font-size: clamp(34px,5vw,60px); line-height: 1.04; letter-spacing: -0.015em;">Managers make AI <span style="color: var(--wmg-accent-ink);">real.</span> These guides help them lead.</h1>
+        <div style="display: flex; flex-direction: column; gap: 20px; padding-top: 6px;">
+          <sc-for list="{{ intro }}" as="para" hint-placeholder-count="3">
+            <p style="margin: 0; font-size: clamp(16px,1.5vw,19px); line-height: 1.55; color: var(--color-shadow-80);">{{ para }}</p>
+          </sc-for>
+          <p style="margin: 6px 0 0; font-size: clamp(16px,1.5vw,19px); line-height: 1.55; font-weight: 600;">You don't need to read every guide from beginning to end. Start with the management challenge you're facing today. Return to the guides whenever you need them.</p>
+        </div>
+      </div>
+
+      <!-- Which guide should I use -->
+      <div style="margin-top: clamp(48px,7vw,88px);">
+        <h2 style="margin: 0 0 8px; font-weight: 700; font-size: clamp(24px,3vw,34px); letter-spacing: -0.01em;">Which Guide Should I Use?</h2>
+        <div style="border-top: 2px solid var(--color-shadow);">
+          <sc-for list="{{ guides }}" as="g" hint-placeholder-count="5">
+            <div style="display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) auto; gap: clamp(12px,2vw,28px); align-items: center; padding: clamp(16px,2vw,22px) 0; border-bottom: 1px solid var(--color-shadow-15);">
+              <div>
+                <div class="t-eyebrow" style="color: var(--color-shadow-45); margin-bottom: 4px;">If you want to</div>
+                <div style="font-size: clamp(15px,1.5vw,18px); line-height: 1.35; color: var(--color-shadow-80);">{{ g.want }}</div>
+              </div>
+              <div>
+                <div class="t-eyebrow" style="color: var(--wmg-accent-ink); margin-bottom: 4px;">Start here</div>
+                <div style="font-size: clamp(16px,1.6vw,20px); line-height: 1.2; font-weight: 700;">{{ g.name }}</div>
+              </div>
+              <div style="justify-self: end;">
+                <sc-if value="{{ g.featured }}" hint-placeholder-val="{{ true }}">
+                  <span style="display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; background: var(--wmg-accent); color: var(--color-shadow); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 5px 10px; border-radius: 2px;"><i class="ph-bold ph-arrow-right"></i> You are here</span>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top: clamp(28px,4vw,44px); display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: clamp(20px,3vw,40px); align-items: start;">
+          <p style="margin: 0; font-size: clamp(16px,1.6vw,20px); font-weight: 700; line-height: 1.3; max-width: 22ch;">Together, these guides help managers:</p>
+          <div style="display: flex; flex-direction: column;">
+            <sc-for list="{{ together }}" as="t" hint-placeholder-count="4">
+              <div style="display: flex; gap: 14px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--color-shadow-15);">
+                <i class="ph-bold ph-check" style="color: var(--wmg-accent-ink); font-size: 17px;"></i>
+                <span style="font-size: clamp(15px,1.5vw,18px); line-height: 1.4;">{{ t }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== B. HERO + CORE IDEA ===== -->
+  <section id="hero" data-surface="dark" class="wmg-hero wmg-dark" style="color: var(--color-white); padding: clamp(56px,8vw,112px) clamp(20px,6vw,80px);">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 26px;">
+        <span style="width: 30px; height: 2px; background: var(--wmg-accent);"></span>
+        <span class="t-eyebrow" style="color: var(--wmg-accent);">The Field Guide</span>
+      </div>
+      <h1 style="margin: 0; font-weight: 700; font-size: clamp(44px,8vw,104px); line-height: 0.96; letter-spacing: -0.02em;">Workflow<br><span style="color: var(--wmg-accent);">Mapping Guide</span></h1>
+      <p style="margin: 24px 0 0; font-size: clamp(18px,2.4vw,30px); line-height: 1.25; color: var(--color-sand); max-width: 24ch; font-weight: 300;">Find the best opportunities to improve how work gets done.</p>
+
+      <div data-callout style="margin-top: clamp(40px,6vw,72px); display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: clamp(28px,4vw,56px); border-top: 1px solid rgba(255,255,255,0.14); padding-top: clamp(28px,4vw,48px);">
+        <div>
+          <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; background: var(--wmg-accent); color: var(--color-shadow); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; border-radius: 2px;">Core Idea</div>
+          <p style="margin: 20px 0 0; font-size: clamp(19px,2vw,26px); line-height: 1.4; color: var(--color-white); font-weight: 300;">The best AI improvements begin with the work, not the tool. Managers often ask, "Where can we use AI?" A better question is "What part of this work creates the most friction and the least value for people?" Start there.</p>
+        </div>
+        <div style="border-left: 2px solid var(--wmg-accent); padding-left: clamp(20px,3vw,32px); display: flex; align-items: center;">
+          <blockquote style="margin: 0; font-size: clamp(24px,3.2vw,42px); line-height: 1.12; font-weight: 700; letter-spacing: -0.01em;">What part of this work creates the most friction and the least value for people?</blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== C. WHEN TO USE + BEFORE YOU START ===== -->
+  <section id="setup" style="background: var(--color-sand-70); padding: clamp(56px,8vw,104px) clamp(20px,6vw,80px);">
+    <div style="max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: clamp(36px,6vw,88px); align-items: start;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 22px;">
+          <span style="width: 30px; height: 2px; background: var(--wmg-accent-ink);"></span>
+          <span class="t-eyebrow" style="color: var(--wmg-accent-ink);">When to Use This Guide</span>
+        </div>
+        <div style="border-top: 1px solid var(--color-shadow-20);">
+          <sc-for list="{{ whenToUse }}" as="w" hint-placeholder-count="4">
+            <div style="display: grid; grid-template-columns: 40px 1fr; gap: 16px; align-items: baseline; padding: 18px 0; border-bottom: 1px solid var(--color-shadow-20);">
+              <span style="font-weight: 700; font-size: 20px; color: var(--wmg-accent-ink);">·</span>
+              <span style="font-size: clamp(16px,1.7vw,21px); line-height: 1.35;">{{ w }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 22px;">
+          <span style="width: 30px; height: 2px; background: var(--wmg-accent-ink);"></span>
+          <span class="t-eyebrow" style="color: var(--wmg-accent-ink);">Before You Start</span>
+        </div>
+        <p style="margin: 0; font-size: clamp(22px,2.4vw,30px); line-height: 1.3; font-weight: 700; letter-spacing: -0.01em;">The best first workflows are <span style="background: var(--wmg-accent); padding: 0 4px;">repeatable, predictable, important enough to matter, and small enough to improve within a few weeks.</span></p>
+        <p style="margin: 22px 0 0; font-size: clamp(16px,1.6vw,19px); line-height: 1.55; color: var(--color-shadow-80);">Don't start with the biggest or most broken process. Early wins build confidence, demonstrate value, and teach the team how to improve the next workflow.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CHAPTER 1 DIVIDER ===== -->
+  <section id="ch1" style="padding: clamp(40px,6vw,72px) clamp(20px,6vw,80px) 0;">
+    <div style="max-width: 1180px; margin: 0 auto; display: flex; align-items: flex-end; gap: clamp(16px,3vw,32px); border-bottom: 2px solid var(--color-shadow); padding-bottom: 18px;">
+      <span style="font-weight: 700; font-size: clamp(48px,9vw,120px); line-height: 0.8; letter-spacing: -0.03em; color: var(--color-shadow-25);">01</span>
+      <div style="padding-bottom: 6px;">
+        <div class="t-eyebrow" style="color: var(--wmg-accent-ink); margin-bottom: 6px;">Chapter One</div>
+        <h2 style="margin: 0; font-weight: 700; font-size: clamp(28px,4vw,52px); line-height: 0.98; letter-spacing: -0.015em;">Find the Friction</h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== D. THE 5 TYPES OF FRICTION (spine + self-check) ===== -->
+  <section id="friction" style="padding: clamp(40px,6vw,72px) clamp(20px,6vw,80px);">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 20px; align-items: end; margin-bottom: clamp(28px,4vw,44px);">
+        <div>
+          <span class="t-eyebrow" style="color: var(--color-shadow-45);">Your Framework</span>
+          <h2 style="margin: 8px 0 0; font-weight: 700; font-size: clamp(28px,4vw,48px); line-height: 1; letter-spacing: -0.015em;">The 5 Types of Workflow Friction</h2>
+        </div>
+        <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--color-shadow-65);"><i class="ph ph-hand-pointing" style="font-size: 15px;"></i> Select the friction you notice below to gather a reflection. This is optional — every description stays visible.</p>
+      </div>
+
+      <!-- spine -->
+      <div style="position: relative;">
+        <sc-for list="{{ frictions }}" as="f" hint-placeholder-count="5">
+          <button type="button" data-friction-row onClick="{{ f.toggle }}" aria-pressed="{{ f.selected }}" style="width: 100%; text-align: left; background: transparent; border: none; cursor: pointer; font-family: inherit; color: inherit; padding: clamp(18px,2.5vw,30px) 0; border-top: 1px solid var(--color-shadow-15); display: grid; grid-template-columns: 76px minmax(0,1fr); gap: clamp(14px,2.5vw,32px); align-items: start;" style-hover="{{ rowHover }}">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+              <span style="{{ f.nodeStyle }}"><i class="ph-light {{ f.icon }}" style="font-size: 28px;"></i></span>
+              <span class="t-eyebrow" style="color: var(--color-shadow-40); font-size: 11px;">{{ f.num }}</span>
+            </div>
+            <div style="padding: 4px 0;">
+              <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+                <h3 style="margin: 0; font-weight: 700; font-size: clamp(24px,3.4vw,40px); line-height: 1; letter-spacing: -0.015em;">{{ f.name }}</h3>
+                <sc-if value="{{ f.selected }}" hint-placeholder-val="{{ false }}">
+                  <span style="display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-shadow); background: var(--wmg-accent); padding: 3px 9px; border-radius: 2px;"><i class="ph-bold ph-check"></i> Noticed</span>
+                </sc-if>
+              </div>
+              <div style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: clamp(12px,2vw,28px);">
+                <div>
+                  <div class="t-eyebrow" style="color: var(--color-shadow-45); margin-bottom: 6px;">What it looks like</div>
+                  <div style="font-size: clamp(15px,1.5vw,18px); line-height: 1.4; color: var(--color-shadow-80);">{{ f.looks }}</div>
+                </div>
+                <div>
+                  <div class="t-eyebrow" style="color: var(--wmg-accent-ink); margin-bottom: 6px;">AI often helps by</div>
+                  <div style="font-size: clamp(15px,1.5vw,18px); line-height: 1.4; color: var(--color-shadow-80);">{{ f.helps }}</div>
+                </div>
+              </div>
+            </div>
+          </button>
+        </sc-for>
+        <div style="border-top: 1px solid var(--color-shadow-15);"></div>
+      </div>
+
+      <!-- reflection -->
+      <div style="margin-top: clamp(28px,4vw,44px);">
+        <sc-if value="{{ hasSelection }}" hint-placeholder-val="{{ false }}">
+          <div data-callout class="wmg-dark" style="color: var(--color-white); padding: clamp(24px,3vw,40px); border-radius: 14px; border: 1px solid rgba(255,255,255,0.08);">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px;">
+              <div>
+                <div class="t-eyebrow" style="color: var(--wmg-accent); margin-bottom: 6px;">A reflection, not an assessment</div>
+                <p style="margin: 0; font-size: clamp(16px,1.6vw,20px); line-height: 1.4; color: var(--color-sand);">The friction you noticed — and where AI often helps.</p>
+              </div>
+              <button data-print-hide onClick="{{ clearFrictions }}" class="btn btn--secondary-inverse btn--sm" style="letter-spacing: 0.06em;"><i class="ph ph-x"></i> Clear selection</button>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 14px;">
+              <sc-for list="{{ selectedFrictions }}" as="sf" hint-placeholder-count="1">
+                <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 18px 20px;">
+                  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;"><i class="ph-light {{ sf.icon }}" style="font-size: 22px; color: var(--wmg-accent);"></i><span style="font-weight: 700; font-size: 20px;">{{ sf.name }}</span></div>
+                  <div class="t-eyebrow" style="color: var(--color-shadow-40); margin-bottom: 4px;">What it looks like</div>
+                  <div style="font-size: 15px; line-height: 1.4; color: var(--color-sand); margin-bottom: 12px;">{{ sf.looks }}</div>
+                  <div class="t-eyebrow" style="color: var(--wmg-accent); margin-bottom: 4px;">AI often helps by</div>
+                  <div style="font-size: 15px; line-height: 1.4; color: var(--color-white);">{{ sf.helps }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <!-- manager insight -->
+      <div data-callout style="margin-top: clamp(36px,5vw,64px); display: grid; grid-template-columns: auto 1fr; gap: clamp(18px,3vw,32px); align-items: start; background: var(--color-sand-80); padding: clamp(28px,4vw,48px); border-left: 3px solid var(--wmg-accent-ink);">
+        <i class="ph-light ph-lightbulb" style="font-size: 40px; color: var(--wmg-accent-ink);"></i>
+        <div>
+          <div class="t-eyebrow" style="color: var(--wmg-accent-ink); margin-bottom: 12px;">Manager Insight</div>
+          <p style="margin: 0; font-size: clamp(19px,2.2vw,28px); line-height: 1.35; font-weight: 600; letter-spacing: -0.01em;">Most workflows contain more than one type of friction. Start with the friction that creates the biggest business impact, not the one that's easiest to automate.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CHAPTER 2 DIVIDER ===== -->
+  <section id="ch2" style="padding: clamp(40px,6vw,72px) clamp(20px,6vw,80px) 0;">
+    <div style="max-width: 1180px; margin: 0 auto; display: flex; align-items: flex-end; gap: clamp(16px,3vw,32px); border-bottom: 2px solid var(--color-shadow); padding-bottom: 18px;">
+      <span style="font-weight: 700; font-size: clamp(48px,9vw,120px); line-height: 0.8; letter-spacing: -0.03em; color: var(--color-shadow-25);">02</span>
+      <div style="padding-bottom: 6px;">
+        <div class="t-eyebrow" style="color: var(--wmg-accent-ink); margin-bottom: 6px;">Chapter Two</div>
+        <h2 style="margin: 0; font-weight: 700; font-size: clamp(28px,4vw,52px); line-height: 0.98; letter-spacing: -0.015em;">Map the Work</h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== E. THE WORKFLOW MAPPING PROCESS ===== -->
+  <section id="process" style="padding: clamp(40px,6vw,72px) clamp(20px,6vw,80px);">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: clamp(24px,3vw,36px);">
+        <span style="width: 30px; height: 2px; background: var(--wmg-accent-ink);"></span>
+        <span class="t-eyebrow" style="color: var(--wmg-accent-ink);">The Workflow Mapping Process</span>
+      </div>
+      <div>
+        <sc-for list="{{ stages }}" as="s" hint-placeholder-count="5">
+          <div data-stage style="border-top: 1px solid var(--color-shadow-20);">
+            <button type="button" onClick="{{ s.toggle }}" aria-expanded="{{ s.open }}" style="width: 100%; text-align: left; background: transparent; border: none; cursor: pointer; font-family: inherit; color: inherit; padding: clamp(22px,3vw,34px) 0; display: grid; grid-template-columns: clamp(56px,8vw,110px) minmax(0,1fr) auto; gap: clamp(16px,3vw,36px); align-items: start;">
+              <span style="font-weight: 700; font-size: clamp(36px,6vw,80px); line-height: 0.82; letter-spacing: -0.03em; color: var(--wmg-accent-ink);">{{ s.num }}</span>
+              <div>
+                <h3 style="margin: 0; font-weight: 700; font-size: clamp(22px,2.8vw,36px); line-height: 1.05; letter-spacing: -0.015em;">{{ s.title }}</h3>
+                <div style="margin-top: 14px; display: flex; gap: 12px; align-items: baseline;">
+                  <span style="display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-white); background: var(--color-shadow); padding: 4px 9px; border-radius: 2px;"><i class="ph-bold ph-target" style="font-size: 12px;"></i> Goal</span>
+                  <span style="font-size: clamp(16px,1.7vw,21px); line-height: 1.35; font-weight: 600; color: var(--color-shadow);">{{ s.goal }}</span>
+                </div>
+              </div>
+              <span data-print-hide style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid var(--color-shadow-25); border-radius: 50%; color: var(--color-shadow); flex: 0 0 auto;" title="{{ s.toggleLabel }}"><i class="ph {{ s.caret }}" style="font-size: 18px;"></i></span>
+            </button>
+            <div data-stage-detail style="{{ s.detailStyle }}">
+              <div style="display: grid; grid-template-columns: clamp(56px,8vw,110px) minmax(0,1fr); gap: clamp(16px,3vw,36px); padding: 0 0 clamp(28px,3.5vw,44px);">
+                <span></span>
+                <div style="max-width: 62ch;">
+                  <p style="margin: 0; font-size: clamp(16px,1.6vw,19px); line-height: 1.6; color: var(--color-shadow-80);">{{ s.body }}</p>
+                  <div style="margin-top: 22px; display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; background: var(--color-sand-70); border-left: 3px solid var(--color-sand-120); padding: 16px 20px;">
+                    <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-shadow-70); white-space: nowrap;"><i class="ph ph-eye" style="font-size: 14px;"></i> Watch for</span>
+                    <span style="font-size: clamp(15px,1.5vw,18px); line-height: 1.45; color: var(--color-shadow-90);">{{ s.watch }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+        <div style="border-top: 1px solid var(--color-shadow-20);"></div>
+      </div>
+      <div data-print-hide style="margin-top: 28px;">
+        <button onClick="{{ goFriction }}" class="btn btn--link" style="font-weight: 700;"><i class="ph ph-arrow-up-left"></i> Return to the 5 types of friction</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== F. MANAGER COACHING QUESTIONS ===== -->
+  <section id="coaching" data-surface="dark" class="wmg-dark" style="color: var(--color-white); padding: clamp(56px,8vw,104px) clamp(20px,6vw,80px);">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+        <span style="width: 30px; height: 2px; background: var(--wmg-accent);"></span>
+        <span class="t-eyebrow" style="color: var(--wmg-accent);">Manager Coaching Questions</span>
+      </div>
+      <p style="margin: 0 0 clamp(32px,4vw,52px); font-size: clamp(20px,2.4vw,30px); line-height: 1.25; font-weight: 300; max-width: 26ch; color: var(--color-sand);">Language you can use with your team.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: clamp(28px,4vw,56px);">
+        <sc-for list="{{ coaching }}" as="grp" hint-placeholder-count="3">
+          <div>
+            <h3 style="margin: 0 0 18px; font-weight: 700; font-size: clamp(18px,2vw,24px); text-transform: uppercase; letter-spacing: 0.06em; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.16); color: var(--wmg-accent);">{{ grp.name }}</h3>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <sc-for list="{{ grp.questions }}" as="q" hint-placeholder-count="2">
+                <div style="display: flex; gap: 14px; align-items: flex-start; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.10);">
+                  <span style="font-size: clamp(16px,1.6vw,19px); line-height: 1.4;">{{ q.text }}</span>
+                  <button data-print-hide onClick="{{ q.copy }}" title="{{ q.copyLabel }}" aria-label="{{ q.copyLabel }}" style="flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: var(--color-sand); cursor: pointer; border-radius: 2px;" style-hover="{{ copyHover }}"><i class="ph {{ q.icon }}" style="font-size: 16px;"></i></button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== G. WORKFLOW NOTES ===== -->
+  <section id="notes" style="padding: clamp(56px,8vw,104px) clamp(20px,6vw,80px);">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: clamp(24px,3vw,36px);">
+        <div>
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <span style="width: 30px; height: 2px; background: var(--wmg-accent-ink);"></span>
+            <span class="t-eyebrow" style="color: var(--wmg-accent-ink);">Workflow Notes</span>
+          </div>
+          <h2 style="margin: 0; font-weight: 700; font-size: clamp(26px,3.4vw,42px); line-height: 1; letter-spacing: -0.015em;">Work through your workflow</h2>
+          <p style="margin: 14px 0 0; font-size: 14px; line-height: 1.5; color: var(--color-shadow-65); max-width: 52ch;"><i class="ph ph-lock-simple" style="font-size: 14px;"></i> Notes are saved only in this browser. Nothing is sent or submitted anywhere.</p>
+        </div>
+        <button data-print-hide onClick="{{ clearNotes }}" class="btn btn--secondary btn--sm" style="letter-spacing: 0.06em;"><i class="ph ph-trash"></i> Clear my notes</button>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: clamp(16px,2vw,24px);">
+        <sc-for list="{{ notes }}" as="n" hint-placeholder-count="10">
+          <label style="display: block;">
+            <span style="display: block; font-size: 13px; font-weight: 700; line-height: 1.35; margin-bottom: 8px; color: var(--color-shadow);">{{ n.label }}</span>
+            <textarea value="{{ n.value }}" onChange="{{ n.onInput }}" rows="2" placeholder="Add a note" class="input" style="resize: vertical; min-height: 64px; line-height: 1.4;"></textarea>
+          </label>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CHAPTER 3 DIVIDER ===== -->
+  <section id="ch3" style="padding: clamp(40px,6vw,72px) clamp(20px,6vw,80px) 0;">
+    <div style="max-width: 1180px; margin: 0 auto; display: flex; align-items: flex-end; gap: clamp(16px,3vw,32px); border-bottom: 2px solid var(--color-shadow); padding-bottom: 18px;">
+      <span style="font-weight: 700; font-size: clamp(48px,9vw,120px); line-height: 0.8; letter-spacing: -0.03em; color: var(--color-shadow-25);">03</span>
+      <div style="padding-bottom: 6px;">
+        <div class="t-eyebrow" style="color: var(--wmg-accent-ink); margin-bottom: 6px;">Chapter Three</div>
+        <h2 style="margin: 0; font-weight: 700; font-size: clamp(28px,4vw,52px); line-height: 0.98; letter-spacing: -0.015em;">Choose the Improvement</h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== H. PROTECT THE PURPOSE OF THE WORK ===== -->
+  <section id="purpose" style="padding: clamp(40px,6vw,72px) clamp(20px,6vw,80px);">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+        <i class="ph-light ph-lightbulb" style="font-size: 26px; color: var(--wmg-accent-ink);"></i>
+        <span class="t-eyebrow" style="color: var(--wmg-accent-ink);">Manager Insight</span>
+      </div>
+      <h2 style="margin: 0; font-weight: 700; font-size: clamp(30px,4.4vw,58px); line-height: 0.98; letter-spacing: -0.02em; max-width: 20ch;">Protect the Purpose of the Work</h2>
+
+      <div style="margin-top: clamp(32px,4vw,52px); display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: clamp(28px,4vw,56px); align-items: start;">
+        <div>
+          <p style="margin: 0; font-size: clamp(16px,1.6vw,19px); line-height: 1.55; color: var(--color-shadow-80);">Before introducing AI into a workflow, ask:</p>
+          <p style="margin: 16px 0 0; font-size: clamp(24px,3vw,38px); line-height: 1.1; font-weight: 700; letter-spacing: -0.015em;">What is the real purpose of this work?</p>
+          <p style="margin: 20px 0 0; font-size: clamp(17px,1.8vw,22px); line-height: 1.4; font-weight: 600;">Use AI to strengthen that purpose—not replace it.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 18px;">
+          <div style="border-left: 3px solid var(--wmg-accent-ink); padding: 4px 0 4px 20px;">
+            <p style="margin: 0; font-size: clamp(15px,1.5vw,18px); line-height: 1.5; color: var(--color-shadow-80);">If the highest value comes from <strong style="color: var(--color-shadow);">preparing information, organizing data, or reducing repetitive effort</strong>, AI can often create significant value.</p>
+          </div>
+          <div style="border-left: 3px solid var(--wmg-accent-2); padding: 4px 0 4px 20px;">
+            <p style="margin: 0; font-size: clamp(15px,1.5vw,18px); line-height: 1.5; color: var(--color-shadow-80);">If the highest value comes from <strong style="color: var(--color-shadow);">human judgment, discussion, coaching, relationship-building, or decision-making</strong>, AI should support those activities—not replace them.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Can vs Should — two-path treatment -->
+      <div data-callout style="margin-top: clamp(40px,5vw,68px); display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: clamp(16px,2vw,24px);">
+        <div class="wmg-dark" style="color: var(--color-white); padding: clamp(24px,3vw,40px); border-radius: 14px; border: 1px solid rgba(142,147,200,0.3); border-left: 3px solid var(--wmg-accent-2);">
+          <div class="t-eyebrow" style="color: var(--wmg-accent-2); margin-bottom: 14px;">A common question</div>
+          <p style="margin: 0; font-size: clamp(26px,3.4vw,44px); line-height: 1; font-weight: 700; color: rgba(255,255,255,0.55); letter-spacing: -0.02em;">"Can AI do this?"</p>
+        </div>
+        <div class="wmg-dark" style="color: var(--color-white); padding: clamp(24px,3vw,40px); border-radius: 14px; border: 1px solid color-mix(in srgb, var(--wmg-accent) 40%, transparent); border-left: 3px solid var(--wmg-accent);">
+          <div style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 14px;"><i class="ph-bold ph-arrow-right" style="color: var(--wmg-accent);"></i><span class="t-eyebrow" style="color: var(--wmg-accent);">A better question</span></div>
+          <p style="margin: 0; font-size: clamp(30px,4.4vw,58px); line-height: 0.98; font-weight: 700; letter-spacing: -0.02em;">"Should AI do this?"</p>
+        </div>
+      </div>
+
+      <div data-callout style="margin-top: clamp(28px,3vw,40px); background: var(--wmg-accent); padding: clamp(24px,3.5vw,44px); border-radius: 4px;">
+        <p style="margin: 0; font-size: clamp(22px,3vw,38px); line-height: 1.1; font-weight: 700; color: var(--color-shadow); letter-spacing: -0.015em; text-align: center;">Use AI to remove friction from the work—not the value from the work.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== I. TYPES OF WORK AI CAN HELP WITH (verbs) ===== -->
+  <section id="verbs" style="background: var(--color-sand-70); padding: clamp(56px,8vw,104px) clamp(20px,6vw,80px);">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 20px; align-items: end; margin-bottom: clamp(28px,4vw,48px);">
+        <div>
+          <span class="t-eyebrow" style="color: var(--wmg-accent-ink);">Types of Work AI Can Help With</span>
+          <h2 style="margin: 8px 0 0; font-weight: 700; font-size: clamp(26px,3.4vw,44px); line-height: 1; letter-spacing: -0.015em;">Think in verbs, not tools</h2>
+        </div>
+        <p style="margin: 0; font-size: clamp(16px,1.6vw,19px); line-height: 1.5; color: var(--color-shadow-80);">Rather than focusing on AI tools, think about the job that needs to be done.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: clamp(10px,1.5vw,18px);">
+        <sc-for list="{{ verbs }}" as="v" hint-placeholder-count="11">
+          <button type="button" onClick="{{ v.toggle }}" aria-pressed="{{ v.on }}" style="{{ v.style }}">{{ v.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== J. COMMON TRAPS ===== -->
+  <section id="traps" style="padding: clamp(56px,8vw,104px) clamp(20px,6vw,80px);">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: clamp(24px,3vw,36px);">
+        <span style="width: 30px; height: 2px; background: var(--wmg-accent-ink);"></span>
+        <span class="t-eyebrow" style="color: var(--wmg-accent-ink);">Common Traps</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 0 clamp(28px,5vw,72px);">
+        <sc-for list="{{ traps }}" as="t" hint-placeholder-count="4">
+          <div style="display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: baseline; padding: clamp(16px,2vw,22px) 0; border-top: 1px solid var(--color-shadow-20);">
+            <span style="font-size: 22px; line-height: 1; color: var(--color-shadow-40); font-weight: 700;">—</span>
+            <span style="font-size: clamp(16px,1.7vw,21px); line-height: 1.4; color: var(--color-shadow-90);">{{ t }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== K. NEXT STEP ===== -->
+  <section id="next" data-surface="dark" class="wmg-dark" style="color: var(--color-white); padding: clamp(64px,9vw,128px) clamp(20px,6vw,80px);">
+    <div style="max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: clamp(28px,4vw,64px); align-items: center;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px;">
+          <span style="width: 30px; height: 2px; background: var(--wmg-accent);"></span>
+          <span class="t-eyebrow" style="color: var(--wmg-accent);">Next Step</span>
+        </div>
+        <p style="margin: 0; font-size: clamp(28px,4vw,56px); line-height: 1.02; font-weight: 700; letter-spacing: -0.02em;">Run a <span style="color: var(--wmg-accent);">Workflow Improvement Sprint.</span></p>
+      </div>
+      <div style="border-left: 2px solid var(--wmg-accent); padding-left: clamp(20px,3vw,36px);">
+        <p style="margin: 0; font-size: clamp(17px,1.9vw,23px); line-height: 1.5; color: var(--color-sand); font-weight: 300;">Once you've identified a worthwhile workflow, run a Workflow Improvement Sprint with your team to redesign the work, test improvements, and capture reusable assets.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RESOURCES / TOOLKIT ===== -->
+  <section id="resources" style="background: var(--color-sand-70); padding: clamp(56px,8vw,104px) clamp(20px,6vw,80px);">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+        <span style="width: 30px; height: 2px; background: var(--wmg-accent-ink);"></span>
+        <span class="t-eyebrow" style="color: var(--wmg-accent-ink);">The Toolkit</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: clamp(16px,3vw,40px); align-items: end; margin-bottom: clamp(28px,4vw,48px);">
+        <h2 style="margin: 0; font-weight: 700; font-size: clamp(30px,4.4vw,54px); line-height: 0.98; letter-spacing: -0.02em;">The toolkit, mapped to the loop</h2>
+        <p style="margin: 0; font-size: clamp(16px,1.6vw,19px); line-height: 1.5; color: var(--color-shadow-80);">Start with a leadership need, pick the resource, and see the behavior it supports — grouped by the two halves of the loop.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); gap: clamp(32px,5vw,64px);">
+        <!-- LEAD THE WORK -->
+        <div>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--wmg-accent-ink);">
+            <h3 style="margin: 0; color: var(--wmg-accent-ink); font-weight: 700; font-size: clamp(18px,2vw,24px); text-transform: uppercase; letter-spacing: 0.06em;">Lead the Work</h3>
+            <span class="t-eyebrow" style="color: var(--wmg-accent-ink);">Identify / Redesign</span>
+          </div>
+          <sc-for list="{{ resourcesWork }}" as="r" hint-placeholder-count="6">
+            <div style="display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 16px; align-items: baseline; padding: clamp(15px,1.8vw,19px) 0; border-bottom: 1px solid var(--color-shadow-15);">
+              <div>
+                <div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;">
+                  <span style="{{ r.nameStyle }}">{{ r.name }}</span>
+                  <sc-if value="{{ r.current }}" hint-placeholder-val="{{ false }}"><span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--wmg-accent-2); border: 1px solid var(--wmg-accent-2); border-radius: 999px; padding: 2px 8px;">You're here</span></sc-if>
+                </div>
+                <div style="font-size: 14px; line-height: 1.4; color: var(--color-shadow-65); margin-top: 5px;">Use when — {{ r.use }}</div>
+              </div>
+              <span class="t-eyebrow" style="{{ r.tagStyle }}">{{ r.tag }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <!-- LEAD THE TEAM -->
+        <div>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--wmg-accent-2);">
+            <h3 style="margin: 0; color: var(--wmg-accent-2); font-weight: 700; font-size: clamp(18px,2vw,24px); text-transform: uppercase; letter-spacing: 0.06em;">Lead the Team</h3>
+            <span class="t-eyebrow" style="color: var(--wmg-accent-2);">Reinforce · Enable · Recognize</span>
+          </div>
+          <sc-for list="{{ resourcesTeam }}" as="r" hint-placeholder-count="4">
+            <div style="display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 16px; align-items: baseline; padding: clamp(15px,1.8vw,19px) 0; border-bottom: 1px solid var(--color-shadow-15);">
+              <div>
+                <div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;">
+                  <span style="{{ r.nameStyle }}">{{ r.name }}</span>
+                  <sc-if value="{{ r.current }}" hint-placeholder-val="{{ false }}"><span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--wmg-accent-2); border: 1px solid var(--wmg-accent-2); border-radius: 999px; padding: 2px 8px;">You're here</span></sc-if>
+                </div>
+                <div style="font-size: 14px; line-height: 1.4; color: var(--color-shadow-65); margin-top: 5px;">Use when — {{ r.use }}</div>
+              </div>
+              <span class="t-eyebrow" style="{{ r.tagStyle }}">{{ r.tag }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <p style="margin: clamp(48px,7vw,84px) auto 0; text-align: center; max-width: 30ch; font-style: italic; font-weight: 700; color: var(--wmg-accent-ink); font-size: clamp(22px,3vw,36px); line-height: 1.15; letter-spacing: -0.01em;">Start with the work, not the tool. One opportunity is enough to begin.</p>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer style="padding: 22px clamp(20px,6vw,80px); border-top: 1px solid var(--color-shadow-15); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="font-weight: 700; letter-spacing: 0.24em; font-size: 13px;">FABLETICS</span>
+      <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 11px; height: 11px; border: 1.5px solid var(--color-shadow); border-radius: 50%;"></span><span style="font-weight: 500; letter-spacing: 0.12em; font-size: 12px; color: var(--color-shadow-70);">OS</span></span>
+    </div>
+    <span class="t-eyebrow" style="color: var(--color-shadow-45);">Confidential · Manager Guides for AI-Enabled Leadership</span>
+  </footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.rootRef = React.createRef();
+    this.progressRef = React.createRef();
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem('wmg_notes_v1') || '{}') || {}; } catch (e) {}
+    this.state = {
+      openStages: { 0: true },
+      selected: {},
+      verbsOn: {},
+      notes: saved,
+      copiedId: null
+    };
+    this.DATA = {
+      intro: [
+        `AI is changing how work gets done across every function of the business. New tools appear constantly, but technology alone does not change how an organization works. Managers do.`,
+        `Every investment Fabletics makes in AI becomes meaningful when managers help their teams work differently. They identify opportunities, redesign work, build new habits, create space for experimentation, and recognize progress.`,
+        `These Field Guides are performance support resources designed to help managers lead AI-enabled improvement in the moments that matter. Each guide focuses on one management challenge and provides practical coaching, principles, and actionable tools you can apply immediately.`
+      ],
+      guides: [
+        { want: `Identify where AI could improve how work gets done`, name: `Workflow Mapping Guide`, featured: true },
+        { want: `Strengthen your thinking before making an important decision`, name: `AI as a Thought Partner`, featured: false },
+        { want: `Coach employees to produce higher-quality AI-assisted work`, name: `AI Work Quality Review Guide`, featured: false },
+        { want: `Lead effective conversations that build AI habits across your team`, name: `Manager Conversation Guide`, featured: false },
+        { want: `Turn individual improvements into reusable team capability`, name: `Building Your Team Asset Library`, featured: false }
+      ],
+      together: [
+        `Improve how work gets done.`,
+        `Improve the quality of work produced.`,
+        `Build AI habits through everyday leadership.`,
+        `Scale learning across the team.`
+      ],
+      whenToUse: [
+        `Your team isn't sure where to begin with AI.`,
+        `You have many ideas but no clear priorities.`,
+        `A workflow feels slower, harder, or more inconsistent than it should.`,
+        `You're preparing for a Workflow Improvement Sprint.`
+      ],
+      frictions: [
+        { id: 'waiting', name: `Waiting`, icon: 'ph-hourglass-medium', looks: `Approvals, handoffs, waiting for information`, helps: `Preparing, summarizing, routing` },
+        { id: 'repetition', name: `Repetition`, icon: 'ph-repeat', looks: `Copying, formatting, manual updates`, helps: `Drafting, transforming, automating` },
+        { id: 'rework', name: `Rework`, icon: 'ph-clock-counter-clockwise', looks: `Multiple revisions, duplicate effort`, helps: `Improving first drafts, increasing consistency` },
+        { id: 'inconsistency', name: `Inconsistency`, icon: 'ph-shuffle', looks: `Different people doing the same work differently`, helps: `Templates, prompts, standardization` },
+        { id: 'thinking', name: `Thinking Bottlenecks`, icon: 'ph-funnel', looks: `Blank-page work, organizing ideas, comparing options`, helps: `Brainstorming, structuring, synthesizing` }
+      ],
+      stages: [
+        { title: `Choose One Workflow Worth Improving`, goal: `Select a workflow where a relatively small improvement could create meaningful value.`, body: `Look for work that happens frequently, frustrates the team, creates delays, or is performed inconsistently. Avoid rare activities, constantly changing processes, or work already being redesigned. Choose something important enough that people notice the improvement, but small enough to complete within a few weeks.`, watch: `If everyone complains about the same task, you've probably found a good candidate.` },
+        { title: `Map What Actually Happens`, goal: `Understand how work really gets done—not how it's supposed to happen.`, body: `The goal isn't to create a perfect process map. Capture the major stages rather than every click or decision. Pay attention to where work waits, where information changes hands, where people leave the official process, where someone says "it depends," and where experienced employees work differently than new employees.`, watch: `If your process map matches the SOP exactly, you probably haven't mapped the real workflow.` },
+        { title: `Diagnose the Friction`, goal: `Understand why time, effort, or quality is being lost.`, body: `Use the 5 Types of Workflow Friction as your diagnostic lens. Don't stop at identifying friction—ask why it exists. Sometimes AI is the answer. Sometimes the workflow itself needs to change before AI adds value.`, watch: `Avoid automating a bad process. Fix unnecessary steps, unclear roles, or poor decisions before layering on AI.` },
+        { title: `Identify the AI Opportunity`, goal: `Match AI to the work, not the technology.`, body: `Instead of asking where AI fits, ask what job someone is doing that AI could help perform. Think in verbs: draft, summarize, organize, compare, extract, rewrite, brainstorm, analyze, review, explain, or challenge.`, watch: `The best AI opportunities usually remove friction while allowing people to focus on higher-value work.` },
+        { title: `Start with One Meaningful Improvement`, goal: `Build capability as well as results.`, body: `The first workflow you improve isn't about maximizing ROI—it's about building confidence. Improve one workflow, test it, learn from it, refine it, and then move to the next opportunity.`, watch: `Success isn't finishing one improvement. Success is creating a team that knows how to keep improving.` }
+      ],
+      verbs: [`Draft`, `Summarize`, `Organize`, `Compare`, `Extract`, `Rewrite`, `Brainstorm`, `Analyze`, `Review`, `Explain`, `Challenge`],
+      coaching: [
+        { name: `Understand`, questions: [`Walk me through how this actually happens.`, `What surprises new employees about this process?`] },
+        { name: `Diagnose`, questions: [`Where does work slow down?`, `Where does quality suffer?`, `Where do people spend time without adding much value?`] },
+        { name: `Improve`, questions: [`What job could AI help perform?`, `If we improved only one step, which would matter most?`] }
+      ],
+      traps: [
+        `Starting with the AI tool instead of the work.`,
+        `Trying to redesign everything at once.`,
+        `Mistaking busy work for high-value work.`,
+        `Optimizing a workflow that doesn't meaningfully improve outcomes.`
+      ],
+      notePrompts: [
+        { id: 'n1', label: `Which workflow are you considering?` },
+        { id: 'n2', label: `What happens frequently?` },
+        { id: 'n3', label: `Where does work wait?` },
+        { id: 'n4', label: `Where is effort repeated?` },
+        { id: 'n5', label: `Where does rework occur?` },
+        { id: 'n6', label: `Where is the process inconsistent?` },
+        { id: 'n7', label: `Where does thinking become a bottleneck?` },
+        { id: 'n8', label: `What is the real purpose of this work?` },
+        { id: 'n9', label: `What job could AI help perform?` },
+        { id: 'n10', label: `If you improved only one step, which would matter most?` }
+      ],
+      navLinks: [
+        { id: 'home', label: `Home` },
+        { id: 'intro', label: `The Guide` },
+        { id: 'process', label: `The Loop` },
+        { id: 'resources', label: `Toolkit` }
+      ],
+      resourcesWork: [
+        { name: `Workflow Mapping Guide`, use: `you are unsure which workflow to improve first.`, tag: `Identify`, current: true },
+        { name: `Workflow Improvement Sprint Kit`, use: `work is repetitive, slow, manual, or inconsistent.`, tag: `Redesign` },
+        { name: `Workflow Improvement Canvas + Cards`, use: `running the sprint or working independently.`, tag: `Redesign` },
+        { name: `Capability Enhancement Sprint Kit`, use: `work needs stronger thinking or higher-quality outputs.`, tag: `Redesign` },
+        { name: `Capability Enhancement Canvas + Cards`, use: `improving existing work or creating new value.`, tag: `Redesign` },
+        { name: `AI Work Quality Review Guide`, use: `reviewing important AI-assisted outputs.`, tag: `Redesign` }
+      ],
+      resourcesTeam: [
+        { name: `AI as Thought Partner Guide`, use: `AI should improve judgment, not just produce content.`, tag: `Enable` },
+        { name: `Psychological Safety + Guardrails Guide`, use: `the team needs permission and clarity to experiment.`, tag: `Enable` },
+        { name: `Team AI Review`, use: `making AI improvement part of the team rhythm.`, tag: `Reinforce` },
+        { name: `Manager Conversation Guide`, use: `reinforcing and recognizing AI through conversations.`, tag: `Reinforce / Recognize` }
+      ]
+    };
+  }
+
+  applyTheme() {
+    const el = this.rootRef.current;
+    if (!el) return;
+    el.style.setProperty('--wmg-accent', '#DCEAE6');
+    el.style.setProperty('--wmg-accent-ink', '#123B37');
+    el.style.setProperty('--wmg-accent-2', '#6E5AA6');
+  }
+
+  componentDidMount() {
+    this.applyTheme();
+    this._onScroll = () => {
+      if (this._raf) return;
+      this._raf = requestAnimationFrame(() => {
+        this._raf = null;
+        const doc = document.documentElement;
+        const max = doc.scrollHeight - window.innerHeight;
+        const pct = max > 0 ? Math.min(100, (window.scrollY / max) * 100) : 0;
+        if (this.progressRef.current) this.progressRef.current.style.width = pct + '%';
+        const secs = ['home', 'intro', 'process', 'resources'];
+        let active = 'home';
+        for (const id of secs) {
+          const el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top <= 140) active = id;
+        }
+        document.querySelectorAll('[data-chapter-link]').forEach(l => {
+          const on = l.getAttribute('data-chapter-link') === active;
+          l.style.color = on ? 'var(--color-shadow)' : 'var(--color-shadow-45)';
+          const dot = l.querySelector('[data-dot]');
+          if (dot) dot.style.background = on ? 'var(--wmg-accent-ink)' : 'transparent';
+        });
+      });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    this._onScroll();
+  }
+  componentDidUpdate() { this.applyTheme(); }
+  componentWillUnmount() { window.removeEventListener('scroll', this._onScroll); }
+
+  scrollTo(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const top = el.getBoundingClientRect().top + window.scrollY - 64;
+    window.scrollTo({ top, behavior: rm ? 'auto' : 'smooth' });
+  }
+  toggleStage(i) { this.setState(s => { const o = { ...s.openStages }; o[i] = !o[i]; return { openStages: o }; }); }
+  toggleFriction(id) { this.setState(s => { const sel = { ...s.selected }; sel[id] = !sel[id]; return { selected: sel }; }); }
+  clearFrictions() { this.setState({ selected: {} }); }
+  toggleVerb(v) { this.setState(s => { const o = { ...s.verbsOn }; o[v] = !o[v]; return { verbsOn: o }; }); }
+  setNote(id, val) {
+    const notes = { ...this.state.notes, [id]: val };
+    try { localStorage.setItem('wmg_notes_v1', JSON.stringify(notes)); } catch (e) {}
+    this.setState({ notes });
+  }
+  clearNotes() {
+    try { localStorage.removeItem('wmg_notes_v1'); } catch (e) {}
+    this.setState({ notes: {} });
+  }
+  copyQuestion(text, id) {
+    try { if (navigator.clipboard) navigator.clipboard.writeText(text); } catch (e) {}
+    this.setState({ copiedId: id });
+    clearTimeout(this._ct);
+    this._ct = setTimeout(() => this.setState({ copiedId: null }), 1600);
+  }
+
+  renderVals() {
+    const st = this.state;
+    const stages = this.DATA.stages.map((s, i) => ({
+      ...s,
+      num: '0' + (i + 1),
+      open: !!st.openStages[i],
+      toggle: () => this.toggleStage(i),
+      toggleLabel: st.openStages[i] ? 'Hide this stage' : 'Show this stage',
+      caret: st.openStages[i] ? 'ph-minus' : 'ph-plus',
+      detailStyle: st.openStages[i] ? { display: 'block' } : { display: 'none' }
+    }));
+    const nodeBase = { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '56px', height: '56px', borderRadius: '50%', transition: 'all 0.15s' };
+    const frictions = this.DATA.frictions.map((f, i) => ({
+      ...f,
+      num: '0' + (i + 1),
+      selected: !!st.selected[f.id],
+      toggle: () => this.toggleFriction(f.id),
+      nodeStyle: st.selected[f.id]
+        ? { ...nodeBase, background: 'var(--wmg-accent)', border: '1.5px solid var(--color-shadow)', color: 'var(--color-shadow)' }
+        : { ...nodeBase, background: 'var(--color-white)', border: '1.5px solid var(--color-shadow-25)', color: 'var(--color-shadow)' }
+    }));
+    const selectedFrictions = frictions.filter(f => f.selected);
+    const verbBase = { fontFamily: 'inherit', cursor: 'pointer', border: 'none', borderBottom: '2px solid var(--color-shadow-20)', padding: '8px 6px', fontWeight: 700, fontSize: 'clamp(22px,3.6vw,44px)', lineHeight: 1, letterSpacing: '-0.015em', transition: 'all 0.15s', color: 'var(--color-shadow)', background: 'transparent' };
+    const verbs = this.DATA.verbs.map(v => ({
+      label: v,
+      on: !!st.verbsOn[v],
+      toggle: () => this.toggleVerb(v),
+      style: st.verbsOn[v]
+        ? { ...verbBase, borderBottomColor: 'var(--wmg-accent-ink)', background: 'color-mix(in srgb, var(--wmg-accent) 32%, white)' }
+        : verbBase
+    }));
+    const coaching = this.DATA.coaching.map(g => ({
+      name: g.name,
+      questions: g.questions.map((t, i) => {
+        const id = g.name + '-' + i;
+        const copied = st.copiedId === id;
+        return { text: t, copy: () => this.copyQuestion(t, id), copied, copyLabel: copied ? 'Copied' : 'Copy question', icon: copied ? 'ph-check' : 'ph-copy' };
+      })
+    }));
+    const notes = this.DATA.notePrompts.map(p => ({
+      id: p.id, label: p.label, value: st.notes[p.id] || '',
+      onInput: (e) => this.setNote(p.id, e.target.value)
+    }));
+    const navLinks = this.DATA.navLinks.map(c => ({ ...c, go: () => this.scrollTo(c.id) }));
+    const mapRes = (arr, ink) => arr.map(r => ({
+      ...r,
+      nameStyle: { fontWeight: 700, fontSize: 'clamp(16px,1.7vw,20px)', lineHeight: 1.2, letterSpacing: '-0.005em', color: r.current ? ink : 'var(--color-shadow)', textDecoration: r.current ? 'underline' : 'none', textUnderlineOffset: '3px' },
+      tagStyle: { color: ink, whiteSpace: 'nowrap' }
+    }));
+    const resourcesWork = mapRes(this.DATA.resourcesWork, 'var(--wmg-accent-ink)');
+    const resourcesTeam = mapRes(this.DATA.resourcesTeam, 'var(--wmg-accent-2)');
+    return {
+      rootRef: this.rootRef,
+      progressRef: this.progressRef,
+      intro: this.DATA.intro,
+      guides: this.DATA.guides,
+      together: this.DATA.together,
+      whenToUse: this.DATA.whenToUse,
+      frictions, selectedFrictions, hasSelection: selectedFrictions.length > 0,
+      stages, verbs, coaching,
+      traps: this.DATA.traps,
+      notes, navLinks, resourcesWork, resourcesTeam,
+      rowHover: { background: 'var(--color-sand-70)' },
+      copyHover: { borderColor: 'var(--wmg-accent)', color: 'var(--wmg-accent)' },
+      goFriction: () => this.scrollTo('friction'),
+      goResources: () => this.scrollTo('resources'),
+      goGuide: () => this.scrollTo('intro'),
+      goNotes: () => this.scrollTo('notes'),
+      clearFrictions: () => this.clearFrictions(),
+      clearNotes: () => this.clearNotes(),
+      printGuide: () => window.print()
+    };
+  }
+}
+</script>
+</body>
+</html>
