@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Team Review Scorecard</title>
+<style>
+  @import url('assets/fonts/fabletics-fonts.css');
+
+  :root{
+    --ink:#16211F;
+    --teal-deep:#123B37;
+    --teal:#1E5C55;
+    --teal-light:#DCEAE6;
+    --sand:#F3EEE3;
+    --paper:#FFFFFF;
+    --line:#DCD5C4;
+    --muted:#5E6C68;
+    --green:#3C8F6D;
+    --green-bg:#E3F1EA;
+    --yellow:#C98A2E;
+    --yellow-bg:#FBEFDD;
+    --red:#B8543F;
+    --red-bg:#F7E5E1;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--sand);
+    color:var(--ink);
+    font-family:'Barlow', sans-serif;
+    padding:40px 20px 80px;
+  }
+  .sheet{
+    max-width:880px;
+    margin:0 auto;
+  }
+
+  /* Header */
+  .header{
+    background:var(--teal-deep);
+    color:var(--paper);
+    border-radius:10px;
+    padding:32px 36px;
+    margin-bottom:28px;
+  }
+  .eyebrow{
+    font-family:'Barlow Semi Condensed', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    font-size:12.5px;
+    color:var(--teal-light);
+    font-weight:600;
+    margin:0 0 6px;
+  }
+  h1{
+    font-family:'Barlow Semi Condensed', sans-serif;
+    font-weight:700;
+    font-size:34px;
+    margin:0 0 8px;
+    letter-spacing:-0.01em;
+  }
+  .subtitle{
+    font-size:15.5px;
+    color:#CFE3DE;
+    margin:0 0 22px;
+    max-width:560px;
+    line-height:1.5;
+  }
+  .meta-row{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .meta-field{
+    flex:1;
+    min-width:160px;
+  }
+  .meta-field label{
+    display:block;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:#9FC2BB;
+    margin-bottom:5px;
+    font-weight:600;
+  }
+  .meta-field input{
+    width:100%;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.25);
+    border-radius:6px;
+    padding:9px 10px;
+    color:var(--paper);
+    font-family:'Barlow', sans-serif;
+    font-size:14px;
+  }
+  .meta-field input::placeholder{color:rgba(255,255,255,0.45);}
+
+  /* Section labels */
+  .part-label{
+    font-family:'Barlow Semi Condensed', sans-serif;
+    font-weight:700;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    color:var(--teal);
+    margin:34px 0 4px;
+    padding-left:2px;
+  }
+  .part-sub{
+    font-size:14px;
+    color:var(--muted);
+    margin:0 0 16px;
+    padding-left:2px;
+  }
+
+  /* Behavior cards */
+  .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:22px 24px;
+    margin-bottom:14px;
+  }
+  .card-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:2px;
+  }
+  .behavior-name{
+    font-family:'Barlow Semi Condensed', sans-serif;
+    font-weight:700;
+    font-size:20px;
+    color:var(--teal-deep);
+  }
+  .behavior-q{
+    font-size:13.5px;
+    color:var(--muted);
+    font-style:italic;
+    margin:0 0 14px;
+  }
+
+  .check-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:10px 0;
+    border-top:1px solid var(--line);
+  }
+  .check-item:first-of-type{border-top:none;}
+  .check-text{
+    font-size:14.5px;
+    line-height:1.4;
+    color:var(--ink);
+  }
+
+  .pulse{
+    display:flex;
+    gap:6px;
+    flex-shrink:0;
+  }
+  .pulse label{
+    cursor:pointer;
+  }
+  .pulse input{
+    display:none;
+  }
+  .pulse span{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:6px 10px;
+    border-radius:20px;
+    border:1px solid var(--line);
+    font-size:12px;
+    font-weight:600;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  .dot{
+    width:8px;height:8px;border-radius:50%;
+    display:inline-block;
+    background:#C7C0AE;
+  }
+  .pulse input:checked + span{border-color:transparent;}
+  .pulse.green input:checked + span{background:var(--green-bg);color:var(--green);}
+  .pulse.green input:checked + span .dot{background:var(--green);}
+  .pulse.yellow input:checked + span{background:var(--yellow-bg);color:var(--yellow);}
+  .pulse.yellow input:checked + span .dot{background:var(--yellow);}
+  .pulse.red input:checked + span{background:var(--red-bg);color:var(--red);}
+  .pulse.red input:checked + span .dot{background:var(--red);}
+
+  /* Tracker cards */
+  .tracker-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  @media (max-width:680px){ .tracker-grid{grid-template-columns:1fr;} }
+
+  .tracker-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:22px 24px;
+  }
+  .tracker-title{
+    font-family:'Barlow Semi Condensed', sans-serif;
+    font-weight:700;
+    font-size:17px;
+    color:var(--teal-deep);
+    margin-bottom:2px;
+  }
+  .tracker-desc{
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:14px;
+  }
+  .field-label{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.07em;
+    color:var(--muted);
+    font-weight:600;
+    margin:12px 0 5px;
+  }
+  .field-label:first-of-type{margin-top:0;}
+  input[type=text], textarea, select{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:9px 10px;
+    font-family:'Barlow', sans-serif;
+    font-size:14px;
+    color:var(--ink);
+    background:var(--paper);
+  }
+  select{
+    appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%235E6C68'/></svg>");
+    background-repeat:no-repeat;
+    background-position:right 12px center;
+  }
+  textarea{resize:vertical;min-height:52px;font-family:'Barlow', sans-serif;}
+
+  /* Closing */
+  .closing{
+    background:var(--teal-light);
+    border-radius:10px;
+    padding:22px 24px;
+    margin-top:14px;
+  }
+  .closing .field-label{color:var(--teal-deep);}
+  .closing-grid{display:flex;flex-direction:column;gap:14px;}
+
+  .footer-note{
+    text-align:center;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:30px;
+    line-height:1.6;
+  }
+</style>
+</head>
+<body>
+<div style="position:sticky; top:0; z-index:50; background:rgba(243,238,227,0.94); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); margin:-40px -20px 26px;">
+  <div style="max-width:880px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 20px;">
+    <a href="Home.dc.html" style="display:flex; align-items:center; gap:8px; color:var(--ink); text-decoration:none; font-family:'Barlow Semi Condensed',sans-serif;"><span style="font-weight:700; letter-spacing:0.2em; font-size:15px;">FABLETICS</span><span style="font-weight:600; letter-spacing:0.1em; font-size:12px; color:var(--muted);">OS</span></a>
+    <nav style="display:flex; align-items:center; gap:18px; font-family:'Barlow Semi Condensed',sans-serif;">
+      <a href="Home.dc.html" style="display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--muted); text-decoration:none;">&#8592; Toolkit</a>
+      <a href="assessment.dc.html" style="font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--muted); text-decoration:none;">Self Assessment</a>
+      <a href="uploads/playbook.pdf" target="_blank" rel="noopener" style="font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--muted); text-decoration:none;">Playbook</a>
+    </nav>
+  </div>
+</div>
+<div class="sheet">
+
+  <div class="header">
+    <p class="eyebrow">Manager Activation · Monthly Pulse</p>
+    <h1>AI Team Review Scorecard</h1>
+    <p class="subtitle">A quick monthly check on how you're leading AI with your team. Fill it in during your Team AI Review — it takes less than 10 minutes.</p>
+    <div class="meta-row">
+      <div class="meta-field">
+        <label>Manager</label>
+        <input type="text" placeholder="Your name">
+      </div>
+      <div class="meta-field">
+        <label>Team</label>
+        <input type="text" placeholder="Team name">
+      </div>
+      <div class="meta-field">
+        <label>Month</label>
+        <input type="text" placeholder="e.g. August 2026">
+      </div>
+    </div>
+  </div>
+
+  <p class="part-label">Part 1 · Behavior Check</p>
+  <p class="part-sub">One quick read on each behavior in the Manager Activation Loop.</p>
+
+  <!-- IDENTIFY -->
+  <div class="card">
+    <div class="card-head"><span class="behavior-name">Identify</span></div>
+    <p class="behavior-q">Are we spotting the right opportunities?</p>
+
+    <div class="check-item">
+      <span class="check-text">We named at least one opportunity to improve this month</span>
+      <div class="pulse green yellow red" data-group="identify-1">
+        <label class="green"><input type="radio" name="identify-1" value="green"><span><span class="dot"></span>Doing this</span></label>
+        <label class="yellow"><input type="radio" name="identify-1" value="yellow"><span><span class="dot"></span>Starting to</span></label>
+        <label class="red"><input type="radio" name="identify-1" value="red"><span><span class="dot"></span>Not yet</span></label>
+      </div>
+    </div>
+    <div class="check-item">
+      <span class="check-text">We know if it's a Workflow or Capability opportunity</span>
+      <div class="pulse green yellow red" data-group="identify-2">
+        <label class="green"><input type="radio" name="identify-2" value="green"><span><span class="dot"></span>Doing this</span></label>
+        <label class="yellow"><input type="radio" name="identify-2" value="yellow"><span><span class="dot"></span>Starting to</span></label>
+        <label class="red"><input type="radio" name="identify-2" value="red"><span><span class="dot"></span>Not yet</span></label>
+      </div>
+    </div>
+    <div class="check-item">
+      <span class="check-text">I made space for the team to surface ideas, not just me</span>
+      <div class="pulse green yellow red" data-group="identify-3">
+        <label class="green"><input type="radio" name="identify-3" value="green"><span><span class="dot"></span>Doing this</span></label>
+        <label class="yellow"><input type="radio" name="identify-3" value="yellow"><span><span class="dot"></span>Starting to</span></label>
+        <label class="red"><input type="radio" name="identify-3" value="red"><span><span class="dot"></span>Not yet</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- REDESIGN -->
+  <div class="card">
+    <div class="card-head"><span class="behavior-name">Redesign</span></div>
+    <p class="behavior-q">Are we improving the work, not just adding AI to it?</p>
+
+    <div class="check-item">
+      <span class="check-text">We ran or continued a sprint (Workflow or Capability)</span>
+      <div class="pulse green yellow red" data-group="redesign-1">
+        <label class="green"><input type="radio" name="redesign-1" value="green"><span><span class="dot"></span>Doing this</span></label>
+        <label class="yellow"><input type="radio" name="redesign-1" value="yellow"><span><span class="dot"></span>Starting to</span></label>
+        <label class="red"><input type="radio" name="redesign-1" value="red"><span><span class="dot"></span>Not yet</span></label>
+      </div>
+    </div>
+    <div class="check-item">
+      <span class="check-text">We rethought the process or output, not just bolted on a tool</span>
+      <div class="pulse green yellow red" data-group="redesign-2">
+        <label class="green"><input type="radio" name="redesign-2" value="green"><span><span class="dot"></span>Doing this</span></label>
+        <label class="yellow"><input type="radio" name="redesign-2" value="yellow"><span><span class="dot"></span>Starting to</span></label>
+        <label class="red"><input type="radio" name="redesign-2" value="red"><span><span class="dot"></span>Not yet</span></label>
+      </div>
+    </div>
+    <div class="check-item">
+      <span class="check-text">Something from this month is reusable (prompt, template, SOP, asset)</span>
+      <div class="pulse green yellow red" data-group="redesign-3">
+        <label class="green"><input type="radio" name="redesign-3" value="green"><span><span class="dot"></span>Doing this</span></label>
+        <label class="yellow"><input type="radio" name="redesign-3" value="yellow"><span><span class="dot"></span>Starting to</span></label>
+        <label class="red"><input type="radio" name="redesign-3" value="red"><span><span class="dot"></span>Not yet</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- REINFORCE -->
+  <div class="card">
+    <div class="card-head"><span class="behavior-name">Reinforce</span></div>
+    <p class="behavior-q">Is AI part of how we already operate?</p>
+
+    <div class="check-item">
+      <span class="check-text">AI came up in a team meeting or 1:1 this month</span>
+      <div class="pulse green yellow red" data-group="reinforce-1">
+        <label class="green"><input type="radio" name="reinforce-1" value="green"><span><span class="dot"></span>Doing this</span></label>
+        <label class="yellow"><input type="radio" name="reinforce-1" value="yellow"><span><span class="dot"></span>Starting to</span></label>
+        <label class="red"><input type="radio" name="reinforce-1" value="red"><span><span class="dot"></span>Not yet</span></label>
+      </div>
+    </div>
+    <div class="check-item">
+      <span class="check-text">We protected time for learning or experimentation</span>
+      <div class="pulse green yellow red" data-group="reinforce-2">
+        <label class="green"><input type="radio" name="reinforce-2" value="green"><span><span class="dot"></span>Doing this</span></label>
+        <label class="yellow"><input type="radio" name="reinforce-2" value="yellow"><span><span class="dot"></span>Starting to</span></label>
+        <label class="red"><input type="radio" name="reinforce-2" value="red"><span><span class="dot"></span>Not yet</span></label>
+      </div>
+    </div>
+    <div class="check-item">
+      <span class="check-text">We looked back at wins, blockers, and next steps</span>
+      <div class="pulse green yellow red" data-group="reinforce-3">
+        <label class="green"><input type="radio" name="reinforce-3" value="green"><span><span class="dot"></span>Doing this</span></label>
+        <label class="yellow"><input type="radio" name="reinforce-3" value="yellow"><span><span class="dot"></span>Starting to</span></label>
+        <label class="red"><input type="radio" name="reinforce-3" value="red"><span><span class="dot"></span>Not yet</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENABLE -->
+  <div class="card">
+    <div class="card-head"><span class="behavior-name">Enable</span></div>
+    <p class="behavior-q">Do people feel safe and clear to experiment?</p>
+
+    <div class="check-item">
+      <span class="check-text">The team knows what's green, yellow, and red to try</span>
+      <div class="pulse green yellow red" data-group="enable-1">
+        <label class="green"><input type="radio" name="enable-1" value="green"><span><span class="dot"></span>Doing this</span></label>
+        <label class="yellow"><input type="radio" name="enable-1" value="yellow"><span><span class="dot"></span>Starting to</span></label>
+        <label class="red"><input type="radio" name="enable-1" value="red"><span><span class="dot"></span>Not yet</span></label>
+      </div>
+    </div>
+    <div class="check-item">
+      <span class="check-text">I coached through at least one mistake with curiosity, not correction</span>
+      <div class="pulse green yellow red" data-group="enable-2">
+        <label class="green"><input type="radio" name="enable-2" value="green"><span><span class="dot"></span>Doing this</span></label>
+        <label class="yellow"><input type="radio" name="enable-2" value="yellow"><span><span class="dot"></span>Starting to</span></label>
+        <label class="red"><input type="radio" name="enable-2" value="red"><span><span class="dot"></span>Not yet</span></label>
+      </div>
+    </div>
+    <div class="check-item">
+      <span class="check-text">Time and permission to experiment felt real, not theoretical</span>
+      <div class="pulse green yellow red" data-group="enable-3">
+        <label class="green"><input type="radio" name="enable-3" value="green"><span><span class="dot"></span>Doing this</span></label>
+        <label class="yellow"><input type="radio" name="enable-3" value="yellow"><span><span class="dot"></span>Starting to</span></label>
+        <label class="red"><input type="radio" name="enable-3" value="red"><span><span class="dot"></span>Not yet</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECOGNIZE -->
+  <div class="card">
+    <div class="card-head"><span class="behavior-name">Recognize</span></div>
+    <p class="behavior-q">Are we celebrating what's working?</p>
+
+    <div class="check-item">
+      <span class="check-text">I called out at least one specific AI win by name</span>
+      <div class="pulse green yellow red" data-group="recognize-1">
+        <label class="green"><input type="radio" name="recognize-1" value="green"><span><span class="dot"></span>Doing this</span></label>
+        <label class="yellow"><input type="radio" name="recognize-1" value="yellow"><span><span class="dot"></span>Starting to</span></label>
+        <label class="red"><input type="radio" name="recognize-1" value="red"><span><span class="dot"></span>Not yet</span></label>
+      </div>
+    </div>
+    <div class="check-item">
+      <span class="check-text">The win was shared beyond just our team (Champs, Show &amp; Tell, cross-functional team share-out, etc.)</span>
+      <div class="pulse green yellow red" data-group="recognize-2">
+        <label class="green"><input type="radio" name="recognize-2" value="green"><span><span class="dot"></span>Doing this</span></label>
+        <label class="yellow"><input type="radio" name="recognize-2" value="yellow"><span><span class="dot"></span>Starting to</span></label>
+        <label class="red"><input type="radio" name="recognize-2" value="red"><span><span class="dot"></span>Not yet</span></label>
+      </div>
+    </div>
+    <div class="check-item">
+      <span class="check-text">Recognition pointed to a behavior we want repeated</span>
+      <div class="pulse green yellow red" data-group="recognize-3">
+        <label class="green"><input type="radio" name="recognize-3" value="green"><span><span class="dot"></span>Doing this</span></label>
+        <label class="yellow"><input type="radio" name="recognize-3" value="yellow"><span><span class="dot"></span>Starting to</span></label>
+        <label class="red"><input type="radio" name="recognize-3" value="red"><span><span class="dot"></span>Not yet</span></label>
+      </div>
+    </div>
+  </div>
+
+  <p class="part-label">Part 2 · Improvement Tracker</p>
+  <p class="part-sub">Where the team's Workflow and Capability work actually stands.</p>
+
+  <div class="tracker-grid">
+    <div class="tracker-card">
+      <p class="tracker-title">Workflow Improvement</p>
+      <p class="tracker-desc">Improving how the work gets done.</p>
+      <p class="field-label">Current opportunity</p>
+      <input type="text" placeholder="What are you improving?">
+      <p class="field-label">Status</p>
+      <select>
+        <option>Not started</option>
+        <option>Mapped</option>
+        <option>Sprint running</option>
+        <option>Live and adopted</option>
+      </select>
+      <p class="field-label">What changed because of it</p>
+      <textarea placeholder="One or two lines"></textarea>
+    </div>
+
+    <div class="tracker-card">
+      <p class="tracker-title">Capability Enhancement</p>
+      <p class="tracker-desc">Improving the quality of the work produced.</p>
+      <p class="field-label">Current opportunity</p>
+      <input type="text" placeholder="What are you improving?">
+      <p class="field-label">Status</p>
+      <select>
+        <option>Not started</option>
+        <option>Mapped</option>
+        <option>Sprint running</option>
+        <option>Live and adopted</option>
+      </select>
+      <p class="field-label">What changed because of it</p>
+      <textarea placeholder="One or two lines"></textarea>
+    </div>
+  </div>
+
+  <div class="closing">
+    <div class="closing-grid">
+      <div>
+        <p class="field-label">This month's win</p>
+        <textarea placeholder="What's worth recognizing?"></textarea>
+      </div>
+      <div>
+        <p class="field-label">Next month's focus</p>
+        <textarea placeholder="What's next?"></textarea>
+      </div>
+      <div>
+        <p class="field-label">What's blocking us, if anything</p>
+        <textarea placeholder="Optional"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <p class="footer-note">AI Manager Activation · Team Review Scorecard · Built to move to Confluence as a live monthly dashboard</p>
+
+</div>
+</body>
+</html>

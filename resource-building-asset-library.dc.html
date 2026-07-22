@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/fabletics-design-system-ce3e2a87-492c-43e5-96a3-7266e28406b4/assets/phosphor/phosphor.css">
+<link rel="stylesheet" href="_ds/fabletics-design-system-ce3e2a87-492c-43e5-96a3-7266e28406b4/styles/colors_and_type.css">
+<link rel="stylesheet" href="assets/fonts/fabletics-fonts.css">
+<style>
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--sand); color:var(--ink); font-family:'Barlow',system-ui,sans-serif;
+    --ink:#16211F; --teal-deep:#123B37; --teal:#1E5C55; --teal-light:#DCEAE6; --sand:#F3EEE3; --sand-2:#EDE7D9;
+    --paper:#FFFFFF; --line:#DCD5C4; --muted:#5E6C68; --purple-deep:#3B2F63; --purple:#6E5AA6; --purple-light:#E9E5F2;
+    --cat:#123B37; --cat-soft:#DCEAE6; }
+  h1,h2,h3,h4,.disp { font-family:'Barlow Semi Condensed','Barlow',sans-serif; }
+  a { color:var(--cat); text-decoration:none; }
+  p { text-wrap:pretty; }
+  .eyebrow { font-family:'Barlow Semi Condensed',sans-serif; text-transform:uppercase; letter-spacing:0.14em; font-size:12px; font-weight:600; }
+  .gtable { width:100%; border-collapse:collapse; border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .gtable th { text-align:left; background:var(--cat); color:var(--paper); font-family:'Barlow Semi Condensed'; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; padding:12px 16px; }
+  .gtable td { padding:13px 16px; border-top:1px solid var(--line); font-size:15px; vertical-align:top; }
+  .gtable td:first-child { font-weight:700; color:var(--cat); width:34%; }
+  .gtable tr:nth-child(even) td { background:var(--sand-2); }
+  :focus-visible { outline:2px solid var(--cat); outline-offset:2px; }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{transition:none!important;} }
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}">
+  <header style="position:sticky; top:0; z-index:50; background:rgba(243,238,227,0.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);">
+    <div style="max-width:960px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px clamp(16px,4vw,32px);">
+      <a href="Home.dc.html" style="display:flex; align-items:center; gap:8px; color:var(--ink);"><span style="font-family:'Barlow Semi Condensed'; font-weight:700; letter-spacing:0.2em; font-size:15px;">FABLETICS</span><span style="font-weight:600; letter-spacing:0.1em; font-size:12px; color:var(--muted);">OS</span></a>
+      <nav style="display:flex; align-items:center; gap:clamp(10px,2vw,22px);">
+        <a href="Home.dc.html#toolkit" style="display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--muted);"><i class="ph-bold ph-arrow-left"></i> All resources</a>
+        <a href="assessment.dc.html" style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--muted);">Self Assessment</a>
+        <a href="uploads/playbook.pdf" target="_blank" rel="noopener" style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--muted);">Playbook</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section style="position:relative; overflow:hidden; background:var(--cat); color:var(--paper);">
+    <div style="position:relative; max-width:960px; margin:0 auto; padding:clamp(36px,5vw,72px) clamp(20px,5vw,40px) clamp(30px,4vw,52px); display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:clamp(24px,4vw,48px); align-items:center;">
+      <div style="min-width:0;">
+        <a href="Home.dc.html#toolkit" style="display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.09em; color:rgba(255,255,255,0.82); margin-bottom:20px;"><i class="ph-bold ph-arrow-left"></i> Back to Toolkit</a>
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+          <span style="font-family:'Barlow Semi Condensed'; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:var(--cat); background:var(--cat-soft); padding:5px 11px; border-radius:999px;">{{ type }}</span>
+          <span style="font-family:'Barlow Semi Condensed'; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--paper); background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.3); padding:4px 11px; border-radius:999px;">{{ areaLabel }} · {{ behaviorLabel }}</span>
+        </div>
+        <h1 style="margin:0; font-weight:700; font-size:clamp(32px,5vw,58px); line-height:0.98; letter-spacing:-0.02em;">{{ title }}</h1>
+        <p style="margin:16px 0 0; font-size:clamp(17px,2vw,22px); line-height:1.3; color:rgba(255,255,255,0.92); font-weight:400;">{{ tagline }}</p>
+      </div>
+      <div style="justify-self:end; width:100%; max-width:400px;"><sc-if value="{{ cover }}" hint-placeholder-val="{{ false }}"><img src="{{ cover }}" alt="" style="width:100%; border-radius:16px; box-shadow:0 22px 55px -26px rgba(0,0,0,0.55); border:1px solid rgba(255,255,255,0.16); display:block;"></sc-if></div>
+    </div>
+  </section>
+
+  <!-- BODY -->
+  <main style="max-width:820px; margin:0 auto; padding:clamp(32px,4vw,56px) clamp(20px,5vw,40px) 40px;">
+
+    <div style="background:var(--cat-soft); border-radius:14px; padding:clamp(20px,3vw,30px); margin-bottom:clamp(32px,4vw,48px);">
+      <div class="eyebrow" style="color:var(--cat); margin-bottom:8px;">Core idea</div>
+      <p style="margin:0; font-size:clamp(18px,2vw,23px); line-height:1.4; font-weight:600; color:var(--ink);">{{ coreIdea }}</p>
+    </div>
+
+    <sc-if value="{{ hasWhenToUse }}" hint-placeholder-val="{{ true }}">
+      <section style="margin-bottom:clamp(32px,4vw,48px);">
+        <h2 style="margin:0 0 14px; font-weight:700; font-size:clamp(22px,2.6vw,30px); letter-spacing:-0.01em;">When to use this guide</h2>
+        <ul style="margin:0; padding:0; list-style:none;">
+          <sc-for list="{{ whenToUse }}" as="w" hint-placeholder-count="4">
+            <li style="display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-top:1px solid var(--line); font-size:16px; line-height:1.45;"><i class="ph-bold ph-check" style="color:var(--cat); font-size:17px; margin-top:2px;"></i><span>{{ w }}</span></li>
+          </sc-for>
+        </ul>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ hasFramework }}" hint-placeholder-val="{{ true }}">
+      <section style="margin-bottom:clamp(32px,4vw,48px);">
+        <div class="eyebrow" style="color:var(--cat); margin-bottom:8px;">{{ framework.label }}</div>
+        <h2 style="margin:0 0 8px; font-weight:700; font-size:clamp(22px,2.8vw,32px); letter-spacing:-0.01em;">{{ framework.title }}</h2>
+        <p style="margin:0 0 18px; font-size:16px; line-height:1.5; color:var(--muted);">{{ framework.intro }}</p>
+        <table class="gtable"><thead><tr><th>{{ framework.headers.a }}</th><th>{{ framework.headers.b }}</th></tr></thead><tbody>
+          <sc-for list="{{ framework.rows }}" as="row" hint-placeholder-count="6"><tr><td>{{ row.a }}</td><td>{{ row.b }}</td></tr></sc-for>
+        </tbody></table>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ hasInsight }}" hint-placeholder-val="{{ true }}">
+      <div style="background:var(--cat); color:var(--paper); border-radius:14px; padding:clamp(22px,3vw,32px); margin-bottom:clamp(32px,4vw,48px); display:flex; gap:16px; align-items:flex-start;">
+        <i class="ph ph-lightbulb" style="font-size:30px; color:var(--cat-soft); flex:0 0 auto;"></i>
+        <div><div class="eyebrow" style="color:var(--cat-soft); margin-bottom:8px;">Manager insight</div><p style="margin:0; font-size:clamp(17px,1.9vw,21px); line-height:1.4; font-weight:600;">{{ insight }}</p></div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ hasProcess }}" hint-placeholder-val="{{ true }}">
+      <section style="margin-bottom:clamp(32px,4vw,48px);">
+        <div class="eyebrow" style="color:var(--cat); margin-bottom:8px;">{{ process.label }}</div>
+        <div style="display:flex; flex-direction:column; gap:14px; margin-top:12px;">
+          <sc-for list="{{ process.items }}" as="s" hint-placeholder-count="5">
+            <div style="background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:clamp(18px,2.4vw,26px);">
+              <div style="display:flex; gap:14px; align-items:baseline;">
+                <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:var(--cat-soft); color:var(--cat); font-family:'Barlow Semi Condensed'; font-weight:700; font-size:15px;">{{ s.n }}</span>
+                <h3 style="margin:0; font-weight:700; font-size:clamp(18px,2vw,22px); line-height:1.1;">{{ s.title }}</h3>
+              </div>
+              <div style="padding-left:46px;">
+                <p style="margin:10px 0 0; font-size:14px; color:var(--cat); font-weight:700;"><span style="text-transform:uppercase; letter-spacing:0.06em; font-size:11px;">Goal · </span>{{ s.goal }}</p>
+                <p style="margin:8px 0 0; font-size:15.5px; line-height:1.5; color:var(--ink);">{{ s.body }}</p>
+                <div style="margin-top:12px; display:flex; gap:10px; align-items:flex-start; background:var(--sand-2); border-left:3px solid var(--cat); padding:11px 14px; border-radius:0 8px 8px 0;"><span class="eyebrow" style="color:var(--cat); font-size:10px; white-space:nowrap; padding-top:2px;">Watch for</span><span style="font-size:14.5px; line-height:1.45;">{{ s.watch }}</span></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- FLEXIBLE SECTIONS -->
+    <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="1">
+      <section style="margin-bottom:clamp(32px,4vw,48px);">
+        <sc-if value="{{ sec.label }}" hint-placeholder-val="{{ false }}"><div class="eyebrow" style="color:var(--cat); margin-bottom:8px;">{{ sec.label }}</div></sc-if>
+        <sc-if value="{{ sec.title }}" hint-placeholder-val="{{ false }}"><h2 style="margin:0 0 8px; font-weight:700; font-size:clamp(21px,2.6vw,30px); letter-spacing:-0.01em;">{{ sec.title }}</h2></sc-if>
+        <sc-if value="{{ sec.intro }}" hint-placeholder-val="{{ false }}"><p style="margin:0 0 16px; font-size:16px; line-height:1.55; color:var(--muted); white-space:pre-line;">{{ sec.intro }}</p></sc-if>
+
+        <sc-if value="{{ sec.isTable }}" hint-placeholder-val="{{ false }}">
+          <table class="gtable"><thead><tr><th>{{ sec.headers.a }}</th><th>{{ sec.headers.b }}</th></tr></thead><tbody>
+            <sc-for list="{{ sec.rows }}" as="row" hint-placeholder-count="3"><tr><td>{{ row.a }}</td><td>{{ row.b }}</td></tr></sc-for>
+          </tbody></table>
+        </sc-if>
+
+        <sc-if value="{{ sec.isList }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px;">
+            <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+              <div style="display:flex; gap:10px; align-items:center; background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:12px 14px; font-size:15px; font-weight:600;"><span style="width:8px; height:8px; border-radius:50%; background:var(--cat); flex:0 0 auto;"></span>{{ it }}</div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ sec.isCards }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; flex-direction:column; gap:14px;">
+            <sc-for list="{{ sec.cards }}" as="c" hint-placeholder-count="2">
+              <div style="background:var(--paper); border:1px solid var(--line); border-top:3px solid var(--cat); border-radius:14px; padding:clamp(18px,2.4vw,26px);">
+                <h3 style="margin:0; font-weight:700; font-size:clamp(18px,2vw,22px); line-height:1.1;">{{ c.title }}</h3>
+                <sc-if value="{{ c.body }}" hint-placeholder-val="{{ false }}"><p style="margin:8px 0 0; font-size:15.5px; line-height:1.5; color:var(--ink);">{{ c.body }}</p></sc-if>
+                <sc-if value="{{ c.note }}" hint-placeholder-val="{{ false }}"><p style="margin:12px 0 0; font-size:14.5px; line-height:1.45; background:var(--cat-soft); border-radius:8px; padding:11px 14px; color:var(--cat); font-weight:600;">{{ c.note }}</p></sc-if>
+                <sc-if value="{{ c.hasBullets }}" hint-placeholder-val="{{ false }}">
+                  <ul style="margin:12px 0 0; padding-left:0; list-style:none; display:flex; flex-direction:column; gap:7px;">
+                    <sc-for list="{{ c.bullets }}" as="b" hint-placeholder-count="3"><li style="display:flex; gap:9px; align-items:flex-start; font-size:15px; line-height:1.4;"><i class="ph ph-quotes" style="color:var(--cat); font-size:15px; margin-top:3px;"></i><span>{{ b }}</span></li></sc-for>
+                  </ul>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ sec.body }}" hint-placeholder-val="{{ false }}"><p style="margin:0; font-size:16px; line-height:1.6; color:var(--ink); white-space:pre-line;">{{ sec.body }}</p></sc-if>
+      </section>
+    </sc-for>
+
+    <sc-if value="{{ hasCoaching }}" hint-placeholder-val="{{ false }}">
+      <section style="margin-bottom:clamp(32px,4vw,48px);">
+        <h2 style="margin:0 0 16px; font-weight:700; font-size:clamp(21px,2.6vw,30px); letter-spacing:-0.01em;">Manager coaching questions</h2>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px;">
+          <sc-for list="{{ coaching }}" as="g" hint-placeholder-count="3">
+            <div style="background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:18px 20px;">
+              <div class="eyebrow" style="color:var(--cat); margin-bottom:10px;">{{ g.name }}</div>
+              <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px;">
+                <sc-for list="{{ g.items }}" as="q" hint-placeholder-count="2"><li style="font-size:15px; line-height:1.4; color:var(--ink); padding-left:14px; position:relative;"><span style="position:absolute; left:0; color:var(--cat);">•</span>{{ q }}</li></sc-for>
+              </ul>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ hasTraps }}" hint-placeholder-val="{{ false }}">
+      <section style="margin-bottom:clamp(32px,4vw,48px);">
+        <h2 style="margin:0 0 12px; font-weight:700; font-size:clamp(21px,2.6vw,30px); letter-spacing:-0.01em;">Common traps</h2>
+        <ul style="margin:0; padding:0; list-style:none;">
+          <sc-for list="{{ traps }}" as="t" hint-placeholder-count="4"><li style="display:flex; gap:12px; align-items:flex-start; padding:11px 0; border-top:1px solid var(--line); font-size:15.5px; line-height:1.45;"><span style="color:var(--muted); font-weight:700;">—</span><span>{{ t }}</span></li></sc-for>
+        </ul>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ hasNextStep }}" hint-placeholder-val="{{ false }}">
+      <div style="background:var(--cat); color:var(--paper); border-radius:14px; padding:clamp(22px,3vw,32px); margin-bottom:clamp(28px,4vw,40px);">
+        <div class="eyebrow" style="color:var(--cat-soft); margin-bottom:8px;">Next step</div>
+        <p style="margin:0; font-size:clamp(16px,1.8vw,20px); line-height:1.45;">{{ nextStep }}</p>
+      </div>
+    </sc-if>
+
+    <section>
+      <h2 style="margin:0 0 16px; font-weight:700; font-size:clamp(19px,2.2vw,26px); letter-spacing:-0.01em;">Related resources</h2>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px;">
+        <sc-for list="{{ related }}" as="r" hint-placeholder-count="3">
+          <a href="{{ r.page }}" style="display:flex; flex-direction:column; gap:7px; background:var(--paper); border:1px solid var(--line); border-left:3px solid {{ r.accent }}; border-radius:12px; padding:16px;">
+            <span class="eyebrow" style="color:{{ r.accent }}; font-size:10px;">{{ r.areaLabel }}</span>
+            <span style="font-weight:700; font-size:15.5px; line-height:1.15; color:var(--ink);">{{ r.title }}</span>
+          </a>
+        </sc-for>
+      </div>
+    </section>
+
+    <div style="margin-top:clamp(32px,4vw,48px); display:flex; justify-content:center;">
+      <a href="Home.dc.html#toolkit" style="display:inline-flex; align-items:center; gap:9px; background:var(--ink); color:var(--paper); font-weight:700; font-size:15.5px; padding:14px 26px; border-radius:999px;"><i class="ph-bold ph-arrow-left"></i> Back to all resources</a>
+    </div>
+
+    <footer style="margin-top:44px; padding-top:22px; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+      <div style="display:flex; align-items:center; gap:8px;"><span style="font-family:'Barlow Semi Condensed'; font-weight:700; letter-spacing:0.2em; font-size:13px;">FABLETICS</span><span style="font-weight:600; letter-spacing:0.1em; font-size:12px; color:var(--muted);">OS</span></div>
+      <span class="eyebrow" style="color:var(--muted);">Confidential · Manager Activation · 2026</span>
+    </footer>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:820}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    this.rootRef = React.createRef();
+    /*R-START*/
+    this.R = {"slug":"building-asset-library","title":"Building Your Team Asset Library","area":"work","behavior":["Redesign"],"type":"Field Guide","tagline":"Turn individual improvements into team capability.","coreIdea":"An AI improvement creates value once. A reusable asset creates value every time someone else uses it. The goal isn't to save more things — it's to help the team improve faster.","whenToUse":["Your team created something worth reusing.","People are solving the same problem repeatedly.","You want to reduce reinvention and increase consistency.","You're deciding what belongs in your team's shared library."],"framework":{"label":"Signature manager lens","title":"The Reuse Test","intro":"Before saving anything, ask whether it passes the Reuse Test. A good asset should continue creating value long after it was first created.","headers":{"a":"Question","b":"If yes…"},"rows":[{"a":"Will someone else realistically use it?","b":"Save it."},{"a":"Will it save meaningful time or effort?","b":"Save it."},{"a":"Will it improve quality or consistency?","b":"Save it."},{"a":"Can someone use it without the creator explaining it?","b":"Save it."},{"a":"Will it still be useful in six months?","b":"Save it."}]},"insight":"The value of an asset isn't measured by how often it was created. It's measured by how often it's reused.","process":{"label":"The Asset Building Process","items":[{"title":"Notice Reusable Work","goal":"Recognize improvements worth preserving.","body":"Look for prompts, templates, checklists, examples, workflows, decision frameworks, or instructions that solved a recurring problem or noticeably improved quality.","watch":"Don't save everything. Save what others will actually use."},{"title":"Apply the Reuse Test","goal":"Decide whether the asset deserves to become part of the team's capability.","body":"If it won't save time, improve quality, or help another teammate succeed independently, it probably doesn't belong in the library.","watch":"The goal is a trusted library, not a large library."},{"title":"Package It for Others","goal":"Make the asset easy to understand and adapt.","body":"Include what it is, when to use it, why it works, and how someone should modify it for their own situation.","watch":"A raw prompt is rarely enough. Context makes assets reusable."},{"title":"Improve It Over Time","goal":"Treat assets as living resources.","body":"As teammates use an asset, refine it based on what they learn. Archive outdated assets and keep the library current.","watch":"The best libraries evolve as the team's capability grows."}]},"sections":[{"kind":"text","label":"From individual win to team capability","title":"","body":"Experiment → Improvement → Reusable Asset → Team Standard → Better Results"},{"kind":"list","label":"What makes a good team asset?","title":"","items":["Prompt or AI instruction","Template or example","Checklist","Workflow or SOP","Decision framework","Review checklist","Meeting agenda or facilitation guide"]},{"kind":"text","label":"Share skills across the organization","title":"","body":"Some reusable assets can create value beyond your immediate team. If your team develops a repeatable AI workflow or set of instructions others could use, consider publishing it as a skill in the FOS Skills Registry — a central library where employees discover, reuse, and share skills created across the organization. Before creating something new, search the registry to see whether an existing skill or template can meet your needs."}],"coaching":[{"name":"Ask yourself","items":["Has someone already created a skill that solves this problem?","Could another team use what we created?","Is the asset clear enough for someone outside our team to use without explanation?","Should this remain a team resource, or create more value in the Skills Registry?","Who will maintain the skill as the workflow or source material changes?"]}],"traps":["Saving everything instead of the best things.","Saving raw prompts with no context.","Creating a library nobody visits.","Never reviewing or improving assets.","Optimizing for quantity instead of usefulness."],"nextStep":"You don't need a formal sprint to build team capability. Any time someone shares something they created with AI — in a meeting, a 1:1, or a project review — pause and ask: 'Did we create something worth saving for the team?' When the answer is yes, capture it, package it, and add it to your shared library.","related":["workflow-sprint","ai-quality","team-review"]};
+    /*R-END*/
+    this.CAT = {
+      "workflow-mapping":{title:"Workflow Mapping Guide",area:"work",page:"Workflow%20Mapping%20Guide.dc.html"},
+      "workflow-sprint":{title:"Workflow Improvement Sprint Kit",area:"work",page:"resource-workflow-sprint.dc.html"},
+      "workflow-canvas":{title:"Workflow Improvement Canvas + Cards",area:"work",page:"resource-workflow-canvas.dc.html"},
+      "capability-sprint":{title:"Capability Enhancement Sprint Kit",area:"work",page:"resource-capability-sprint.dc.html"},
+      "capability-canvas":{title:"Capability Enhancement Canvas + Cards",area:"work",page:"resource-capability-canvas.dc.html"},
+      "ai-quality":{title:"AI Work Quality Review Guide",area:"work",page:"resource-ai-quality.dc.html"},
+      "thought-partner":{title:"AI as a Thought Partner Guide",area:"team",page:"resource-thought-partner.dc.html"},
+      "psych-safety":{title:"Psychological Safety and Guardrails Guide",area:"team",page:"resource-psych-safety.dc.html"},
+      "team-review":{title:"Team AI Review",area:"team",page:"resource-team-review.dc.html"},
+      "manager-conversation":{title:"Manager Conversation Guide",area:"team",page:"resource-manager-conversation.dc.html"},
+      "building-asset-library":{title:"Building Your Team Asset Library",area:"work",page:"resource-building-asset-library.dc.html"}
+    };
+  }
+  componentDidMount(){
+    const el=this.rootRef.current; if(el){ if(this.R.area==='team'){ el.style.setProperty('--cat','#3B2F63'); el.style.setProperty('--cat-soft','#E9E5F2'); } else { el.style.setProperty('--cat','#123B37'); el.style.setProperty('--cat-soft','#DCEAE6'); } }
+    try{ document.title = this.R.title + ' · Manager Activation Toolkit'; }catch(e){}
+  }
+  renderVals(){
+    const R=this.R;
+    const accentFor=(a)=> a==='team'?'var(--purple)':'var(--teal)';
+    const related=(R.related||[]).map(s=>{ const c=this.CAT[s]; if(!c) return null; return { title:c.title, page:c.page, areaLabel:c.area==='team'?'Lead the Team':'Lead the Work', accent:accentFor(c.area) }; }).filter(Boolean);
+    const sections=(R.sections||[]).map(s=>({ ...s, isTable:s.kind==='table', isList:s.kind==='list', isCards:s.kind==='cards',
+      cards:(s.cards||[]).map(c=>({ ...c, hasBullets:!!(c.bullets&&c.bullets.length) })) }));
+    const process=R.process?{ label:R.process.label, items:R.process.items.map((it,i)=>({ ...it, n:i+1 })) }:null;
+    return {
+      rootRef:this.rootRef,
+      title:R.title, type:R.type, tagline:R.tagline,
+      areaLabel:R.area==='team'?'Lead the Team':'Lead the Work', behaviorLabel:(R.behavior||[]).join(' / '),
+      cover:'assets/covers2/'+R.slug+'.svg',
+      coreIdea:R.coreIdea,
+      hasWhenToUse:!!(R.whenToUse&&R.whenToUse.length), whenToUse:R.whenToUse||[],
+      hasFramework:!!R.framework, framework:R.framework||{headers:{}},
+      hasInsight:!!R.insight, insight:R.insight,
+      hasProcess:!!process, process:process||{items:[]},
+      sections,
+      hasCoaching:!!(R.coaching&&R.coaching.length), coaching:R.coaching||[],
+      hasTraps:!!(R.traps&&R.traps.length), traps:R.traps||[],
+      hasNextStep:!!R.nextStep, nextStep:R.nextStep,
+      related
+    };
+  }
+}
+</script>
+</body>
+</html>

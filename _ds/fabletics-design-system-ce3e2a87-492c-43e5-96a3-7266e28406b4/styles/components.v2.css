@@ -1,0 +1,383 @@
+/* ============================================================
+   FABLETICS — COMPONENTS
+   ============================================================ */
+
+/* -------- BUTTONS --------
+   Source: 01-tokens/themes/fabletics/buttons.js
+   - border-radius: theme.sizes.xxxs = 4px
+   - font-weight: 600
+   - transition: background-color 0.16s ease-in-out, border-color 0.16s ease-in-out
+   - sizes: sm (padding 8 12 / p1 14px), md (padding 12 18 / p2 16px),
+            lg (padding 14 20 / p3 18px)
+---------------------------------------------------------- */
+.btn {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);              /* 4px */
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.16s ease-in-out, border-color 0.16s ease-in-out, color 0.16s ease-in-out;
+  line-height: 1;
+  white-space: nowrap;
+  gap: var(--sp-xxs);
+  vertical-align: middle;
+  appearance: none;
+}
+.btn:focus-visible { outline: 2px solid var(--color-blue); outline-offset: 2px; }
+
+.btn > .btn__label { display: inline-flex; align-items: center; gap: var(--sp-xxxs); transition: color 0.16s ease-in-out; }
+
+/* Sizes — exact padding + type scale from buttons.js sizeVariants */
+.btn--sm { padding: 8px 12px;  font-size: 14px; }   /* paragraph1 */
+.btn--md { padding: 12px 18px; font-size: 16px; }   /* paragraph2 (default) */
+.btn--lg { padding: 14px 20px; font-size: 18px; }   /* paragraph3 */
+
+/* --- primary : shadow → black on hover --- */
+.btn--primary { background: var(--color-shadow); color: var(--color-white); border-color: var(--color-shadow); }
+.btn--primary:hover:not(:disabled),
+.btn--primary:focus:not(:disabled),
+.btn--primary:active:not(:disabled),
+.btn--primary.is-hover { background: var(--color-black); border-color: var(--color-black); color: var(--color-white); }
+.btn--primary:disabled,
+.btn--primary.is-disabled { background: var(--color-shadow-20); border-color: var(--color-shadow-20); color: var(--color-shadow-40); cursor: not-allowed; }
+
+/* --- secondary : sand → sand110 on hover --- */
+.btn--secondary { background: var(--color-sand); color: var(--color-black); border-color: var(--color-sand); }
+.btn--secondary:hover:not(:disabled),
+.btn--secondary:focus:not(:disabled),
+.btn--secondary:active:not(:disabled),
+.btn--secondary.is-hover { background: var(--color-sand-110); border-color: var(--color-sand-110); }
+.btn--secondary:disabled,
+.btn--secondary.is-disabled { color: var(--color-shadow-40); background: var(--color-shadow-20); border-color: var(--color-shadow-20); cursor: not-allowed; }
+
+/* --- tertiary : alertRed (= jewelRed) → jewelRed70 on hover (LIGHTER red) --- */
+.btn--tertiary { background: var(--color-jewel-red); color: var(--color-white); border-color: var(--color-jewel-red); }
+.btn--tertiary:hover:not(:disabled),
+.btn--tertiary:focus:not(:disabled),
+.btn--tertiary:active:not(:disabled),
+.btn--tertiary.is-hover { background: var(--color-jewel-red-70); border-color: var(--color-jewel-red-70); }
+.btn--tertiary:disabled { cursor: not-allowed; opacity: 0.6; }
+
+/* --- primaryAddToBag : jewelRed → jewelRed120 on hover (DARKER red) --- */
+.btn--addtobag { background: var(--color-jewel-red); color: var(--color-white); border-color: var(--color-jewel-red); }
+.btn--addtobag:hover:not(:disabled),
+.btn--addtobag:focus:not(:disabled),
+.btn--addtobag:active:not(:disabled),
+.btn--addtobag.is-hover { background: var(--color-jewel-red-120); border-color: var(--color-jewel-red-120); }
+.btn--addtobag:disabled,
+.btn--addtobag.is-disabled { background: var(--color-jewel-red-50); border-color: var(--color-jewel-red-50); cursor: not-allowed; }
+
+/* --- link : black text on transparent, no padding, no uppercase --- */
+.btn--link { background: transparent; border-color: transparent; padding: 0; color: var(--color-black); text-transform: none; letter-spacing: 0; text-decoration: underline; text-underline-offset: 3px; }
+.btn--link:hover:not(:disabled),
+.btn--link:focus:not(:disabled) { color: var(--color-shadow-70); }
+.btn--link:disabled { color: var(--color-shadow-30); cursor: not-allowed; }
+
+/* --- linkSecondary : emphasized/blue link, uses linkText color --- */
+.btn--link-secondary { background: transparent; border-color: transparent; padding: 0; color: var(--color-blue); text-transform: none; letter-spacing: 0; text-decoration: underline; text-underline-offset: 3px; }
+.btn--link-secondary:hover:not(:disabled) { color: var(--color-shadow); }
+.btn--link-secondary:disabled { color: var(--color-shadow-30); cursor: not-allowed; }
+
+/* --- text_link : rendered as <a>, not <button> (CtaNode branches on variant) --- */
+.cta-text-link { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-family-base); font-weight: 600; font-size: 14px; color: var(--color-black); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.cta-text-link:hover { color: var(--color-shadow-70); }
+.cta-text-link::after { content: "→"; font-family: var(--font-family-base); letter-spacing: 0; }
+
+/* --- unstyled : reset-only; used when consumers need raw button semantics --- */
+.btn--unstyled { cursor: pointer; background: transparent; border: none; padding: 0; margin: 0; font: inherit; color: inherit; text-transform: none; letter-spacing: 0; font-weight: 400; border-radius: 0; }
+
+/* --- inverse variants for dark surfaces (promo/VIP modules) --- */
+.btn--primary-inverse { background: var(--color-white); color: var(--color-shadow); border-color: var(--color-white); }
+.btn--primary-inverse:hover,
+.btn--primary-inverse.is-hover { background: var(--color-sand); border-color: var(--color-sand); }
+.btn--secondary-inverse { background: transparent; color: var(--color-white); border-color: var(--color-white); }
+.btn--secondary-inverse:hover,
+.btn--secondary-inverse.is-hover { background: var(--color-white); color: var(--color-shadow); }
+
+/* --- loading state : arrow indicator centered; label hidden but width preserved --- */
+.btn.is-loading { cursor: progress; }
+.btn.is-loading > .btn__label { visibility: hidden; }
+.btn__loading { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; display: none; }
+.btn.is-loading > .btn__loading { display: block; animation: btn-spin 0.9s linear infinite; }
+@keyframes btn-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+/* -------- PRICE -------- */
+.price { display: inline-flex; align-items: baseline; gap: 8px; font-family: var(--font-family-base); }
+.price__regular { text-decoration: line-through; color: var(--text-muted); font-size: 14px; }
+.price__member { color: var(--color-black); font-size: 16px; font-weight: 700; }
+.price__sale { color: var(--text-sale); font-size: 16px; font-weight: 700; }
+.price__label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 700; }
+
+/* -------- BADGE -------- */
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 2px; }
+.badge--vip { background: var(--color-sunshine); color: var(--color-shadow); }
+.badge--new { background: var(--color-shadow); color: var(--color-white); }
+.badge--sale { background: var(--color-jewel-red); color: var(--color-white); }
+.badge--scarcity { background: transparent; color: var(--color-jewel-red); padding-left: 0; }
+
+/* -------- SWATCH -------- */
+.swatches { display: inline-flex; gap: 6px; }
+.swatch-chip { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--border-subtle); cursor: pointer; position: relative; transition: transform 0.12s; }
+.swatch-chip[aria-selected="true"] { outline: 1px solid var(--color-black); outline-offset: 2px; }
+.swatch-chip:hover { transform: scale(1.08); }
+
+/* -------- SIZE PILL -------- */
+.size-grid { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.size-pill { min-width: 44px; padding: 10px 12px; border: 1px solid var(--color-shadow-25); background: var(--color-white); font-size: 12px; font-weight: 600; cursor: pointer; transition: border-color 0.12s; }
+.size-pill:hover { border-color: var(--color-black); }
+.size-pill[aria-selected="true"] { background: var(--color-black); color: var(--color-white); border-color: var(--color-black); }
+.size-pill[aria-disabled="true"] { color: var(--color-shadow-45); background: var(--color-shadow-15); text-decoration: line-through; cursor: not-allowed; }
+
+/* -------- PRODUCT CARD -------- */
+.product-card { font-family: var(--font-family-base); display: flex; flex-direction: column; gap: 8px; position: relative; }
+.product-card__img { aspect-ratio: 3/4; background: var(--color-sand-80); overflow: hidden; position: relative; }
+.product-card__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.product-card__badges { position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 6px; }
+.product-card__wishlist { position: absolute; top: 10px; right: 10px; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.9); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--color-shadow); }
+.product-card__name { font-size: 14px; font-weight: 400; color: var(--color-shadow); margin: 4px 0 0; }
+.product-card__reviews { font-size: 12px; color: var(--text-muted); }
+
+/* -------- INPUT -------- */
+.input { font-family: var(--font-family-base); font-size: 14px; padding: 12px 14px; border: 1px solid var(--color-shadow-25); border-radius: var(--radius-sm); background: var(--color-white); color: var(--color-black); width: 100%; }
+.input:focus { outline: none; border-color: var(--color-black); }
+.input::placeholder { color: var(--text-subdued); }
+
+/* -------- NAV -------- */
+.topnav { display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 1px solid var(--border-subtle); background: var(--color-white); font-family: var(--font-family-base); }
+.topnav__tabs { display: flex; gap: 24px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.topnav__tab { color: var(--color-black); cursor: pointer; padding: 6px 0; border-bottom: 2px solid transparent; }
+.topnav__tab.is-active { border-color: var(--color-black); }
+.topnav__icons { display: flex; gap: 20px; color: var(--color-black); }
+.announcement-bar { background: var(--color-sand-80); color: var(--color-shadow); padding: 8px; text-align: center; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* -------- FREE SHIPPING BAR -------- */
+.ship-bar { padding: 12px 16px; border: 1px solid var(--border-subtle); border-radius: 2px; font-size: 12px; font-weight: 600; }
+.ship-bar__track { height: 4px; background: var(--color-shadow-15); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+.ship-bar__fill { height: 100%; background: var(--color-shadow); }
+
+/* -------- VIP PERK PILL -------- */
+.vip-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--color-sunshine); color: var(--color-shadow); border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* ============================================================
+   PILL / TAG — Small label for product states.
+   Source: themes/fabletics → product-card badge tokens (used inline today
+   on Shop Grid as .pc__badge--*; this is the canonical primitive).
+   - Solid pills for state (New, Sale, Promo, Preorder, VIP, Exclusive).
+   - Outline variant for soft callouts (Low stock, Final sale).
+   - Two sizes: sm (10/4·8 — default product-card) · md (11/6·10 — PDP/hero).
+   - Border-radius: --radius-xs (2px) by default; --pill--rounded uses pill radius.
+   - Used on: ProductCell · PDP gallery overlays · Cart line items · Wishlist tiles.
+   ============================================================ */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  font-family: var(--font-family-base);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--radius-xs);             /* 2px */
+  border: 1px solid transparent;
+  background: var(--color-shadow);
+  color: var(--color-white);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* Sizes */
+.pill--sm { font-size: 10px; padding: 4px 8px; letter-spacing: 0.08em; }
+.pill--md { font-size: 11px; padding: 6px 10px; letter-spacing: 0.1em; }
+
+/* Shape modifier */
+.pill--rounded { border-radius: var(--radius-pill); padding-inline: 10px; }
+
+/* Optional leading dot — built in via ::before so authors don't need extra markup */
+.pill--dot::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+/* ---- State variants ----
+   Each pairs a token-driven background with the correct contrast text. */
+
+/* NEW — default solid black, also exposed as --new for clarity */
+.pill--new       { background: var(--color-shadow);      color: var(--color-white); }
+
+/* SALE — jewelRed solid, the brand's sale signal */
+.pill--sale      { background: var(--color-jewel-red);   color: var(--color-white); }
+
+/* PROMO — jewelRed-15 wash + jewelRed-110 text (mirrors filter-drawer "promo" chip) */
+.pill--promo     { background: var(--color-jewel-red-15); color: var(--color-jewel-red-110); }
+
+/* PREORDER — sand wash, neutral on warm — reads as "queued / waiting" */
+.pill--preorder  { background: var(--color-sand);        color: var(--color-shadow); }
+
+/* VIP — sunshine, the loyalty highlight token */
+.pill--vip       { background: var(--color-sunshine);    color: var(--color-shadow); }
+
+/* EXCLUSIVE — outlined on white; reserved for member-only */
+.pill--exclusive { background: var(--color-white);       color: var(--color-black); border-color: var(--color-black); }
+
+/* RESTOCK — sky blue accent, info-leaning */
+.pill--restock   { background: var(--color-blue);        color: var(--color-white); }
+
+/* LOW STOCK — outlined jewelRed; soft "watch out" without claiming SALE */
+.pill--low-stock { background: transparent;              color: var(--color-jewel-red-110); border-color: var(--color-jewel-red-110); }
+
+/* SOLD OUT — muted, neutral — no urgency, just status */
+.pill--sold-out  { background: var(--color-shadow-15);   color: var(--color-shadow-70); }
+
+/* FINAL SALE — solid darker red, signals "no returns" */
+.pill--final     { background: var(--color-jewel-red-110); color: var(--color-white); }
+
+/* SUCCESS / ECO — green, used for "Sustainable", "Restored" labels */
+.pill--success   { background: var(--color-green);       color: var(--color-white); }
+
+/* On-image variant — adds drop shadow so the pill stays legible over photography */
+.pill--on-image { box-shadow: 0 1px 2px rgba(0,0,0,0.18); }
+
+/* ============================================================
+   BREADCRUMBS — Wayfinding trail above the grid header.
+   Source: 01-tokens/themes/fabletics/themeTokens.js → builderCategoryNav.breadcrumbs
+   - Active item: color: gridActiveBreadcrumbTextColor (black) + font-weight 600
+   - Resting items: muted, uppercase, separator "/"
+   - Used on: every Shop / category / search result page.
+   ============================================================ */
+.breadcrumbs {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 8px;
+  padding: 14px 0;
+  font-family: var(--font-family-base);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-muted);
+  list-style: none; margin: 0;
+}
+.breadcrumbs__item { display: inline-flex; align-items: center; gap: 8px; }
+.breadcrumbs__link {
+  color: var(--text-muted); text-decoration: none; cursor: pointer;
+  transition: color 0.16s ease-in-out;
+}
+.breadcrumbs__link:hover,
+.breadcrumbs__link:focus-visible { color: var(--color-black); text-decoration: underline; text-underline-offset: 3px; }
+.breadcrumbs__sep {
+  color: var(--color-shadow-25);
+  font-weight: 400;
+  user-select: none;
+  display: inline-block;
+}
+.breadcrumbs__current {
+  color: var(--color-black);
+  font-weight: 600;
+}
+
+/* size variants */
+.breadcrumbs--sm { font-size: 10px; padding: 10px 0; }
+.breadcrumbs--lg { font-size: 12px; padding: 18px 0; }
+
+/* slash | chevron | dot — only the separator glyph changes via modifier */
+.breadcrumbs--chevron .breadcrumbs__sep::before { content: '›'; font-size: 14px; line-height: 1; }
+.breadcrumbs--chevron .breadcrumbs__sep { font-size: 0; }
+.breadcrumbs--dot .breadcrumbs__sep::before { content: '•'; }
+.breadcrumbs--dot .breadcrumbs__sep { font-size: 0; }
+
+/* mobile: collapse middle items behind a "…" — set data-collapsed on root */
+.breadcrumbs[data-collapsed="true"] .breadcrumbs__item:not(:first-child):not(:nth-last-child(1)):not(:nth-last-child(2)) { display: none; }
+.breadcrumbs[data-collapsed="true"] .breadcrumbs__ellipsis { display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); }
+.breadcrumbs__ellipsis { display: none; }
+
+/* ============================================================
+   CATEGORY TABS — Subcategory horizontal scroller.
+   Source: 01-tokens/themes/fabletics/colors.js → gridV2CategoryTab*
+   - Active: bottom-border underline (gridV2CategoryTabLinkActiveUnderline = black)
+   - Hover: gridV2CategoryTabLinkBgHover (shadow10) wash
+   - Pressed: gridV2CategoryTabLinkBgPressed (shadow15)
+   - Container border: gridV2CategoryTabContainerBorder (shadow20)
+   - Used on: subcategory navigation under Breadcrumbs on Shop Grid.
+   ============================================================ */
+.cat-tabs {
+  position: relative;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--color-shadow-20);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  font-family: var(--font-family-base);
+}
+.cat-tabs::-webkit-scrollbar { display: none; }
+
+.cat-tabs__tab {
+  position: relative;
+  flex: 0 0 auto;
+  padding: 16px 18px;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--text-muted);
+  background: transparent;
+  border: 0; border-bottom: 2px solid transparent;
+  margin-bottom: -1px; /* overlap container border */
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  transition: background-color 0.16s ease-in-out, color 0.16s ease-in-out;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.cat-tabs__tab:hover { background: var(--color-shadow-10); color: var(--color-black); }
+.cat-tabs__tab:active { background: var(--color-shadow-15); }
+.cat-tabs__tab:focus-visible { outline: 2px solid var(--color-blue); outline-offset: -2px; }
+
+.cat-tabs__tab[aria-selected="true"],
+.cat-tabs__tab.is-active {
+  color: var(--color-black);
+  border-bottom-color: var(--color-black);
+}
+
+/* count chip — for "All Leggings 384" style */
+.cat-tabs__count {
+  font-family: ui-monospace, monospace;
+  font-size: 10px; font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.cat-tabs__tab[aria-selected="true"] .cat-tabs__count,
+.cat-tabs__tab.is-active .cat-tabs__count { color: var(--color-black); }
+
+/* optional thumbnail (e.g. category swatches above tab label) */
+.cat-tabs--with-thumbs .cat-tabs__tab {
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 14px 10px;
+  min-width: 80px;
+}
+.cat-tabs__thumb {
+  width: 56px; height: 56px;
+  background: var(--bg-surface);
+  border: 1px solid var(--color-shadow-15);
+  display: block;
+  object-fit: cover;
+}
+.cat-tabs--with-thumbs .cat-tabs__tab[aria-selected="true"] .cat-tabs__thumb,
+.cat-tabs--with-thumbs .cat-tabs__tab.is-active .cat-tabs__thumb { border-color: var(--color-black); }
+
+/* size variant for narrow contexts */
+.cat-tabs--sm .cat-tabs__tab { padding: 12px 14px; font-size: 12px; }
+
+/* edge fade hint (apply on container in scrolling state) */
+.cat-tabs--scrollable {
+  mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
+}

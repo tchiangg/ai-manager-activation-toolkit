@@ -1,0 +1,218 @@
+/* ============================================================
+   FABLETICS — COLORS & TYPE
+   Brand foundation tokens. Import this file into any design.
+   ============================================================ */
+
+@import url('../../../assets/fonts/fabletics-fonts.css'); /* was Google Fonts; now hosted locally */
+
+/* -----------------------------------------------------------
+   FONTS
+   Brand voice: GT Pressura (Standard + Extended). 
+   Fabletics fallback stack: GT Pressura is the primary brand
+   font across all digital surfaces. Weights used in product:
+   300, 400, 600, 700.
+   ----------------------------------------------------------- */
+
+@font-face {
+  font-family: 'GTPressura';
+  src: url('../fonts/GT-Pressura-Standard-Text.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'GTPressura';
+  src: url('../fonts/GT-Pressura-Standard-Text-Italic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'GTPressura';
+  src: url('../fonts/GT-Pressura-Standard-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'GTPressura';
+  src: url('../fonts/GT-Pressura-Standard-Regular-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'GTPressura';
+  src: url('../fonts/GT-Pressura-Standard-Medium.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'GTPressura';
+  src: url('../fonts/GT-Pressura-Standard-Medium-Italic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'GTPressura';
+  src: url('../fonts/GT-Pressura-Standard-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'GTPressura';
+  src: url('../fonts/GT-Pressura-Standard-Bold-Italic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* ---------- FONT STACKS ---------- */
+  --font-family-base: 'Barlow Semi Condensed', 'GTPressura', 'Helvetica Neue', Arial, sans-serif;
+  --font-family-extended: 'Barlow Semi Condensed', 'GTPressura', 'Helvetica Neue', Arial, sans-serif;
+  --font-family-display: 'Barlow Semi Condensed', 'GTPressura', 'Helvetica Neue', Arial, sans-serif;
+
+  /* ---------- CORE PALETTE (BRAND) ---------- */
+  /* Shadow = the brand's near-black. Used for text, bg-dark. */
+  --color-shadow:      #1B1C19;
+  --color-shadow-5:    #FAFAFA;
+  --color-shadow-10:   #F4F4F3;
+  --color-shadow-15:   #EDEDED;
+  --color-shadow-20:   #DDDFDB;
+  --color-shadow-25:   #D3D3D3;
+  --color-shadow-30:   #C7C9C3;
+  --color-shadow-40:   #9A9E92;
+  --color-shadow-45:   #9C9C9C;
+  --color-shadow-50:   #6C7164;
+  --color-shadow-65:   #666666;
+  --color-shadow-70:   #55584F;
+  --color-shadow-80:   #3E4039;
+  --color-shadow-90:   #333333;
+
+  /* Sand = warm off-white. Bg, cards, surfaces. */
+  --color-sand:        #E8E4DA;
+  --color-sand-70:     #FBF8F5;
+  --color-sand-80:     #F4F2EE;
+  --color-sand-90:     #EEE9E3;
+  --color-sand-110:    #D1CDC1;
+  --color-sand-115:    #D3CDBC;
+  --color-sand-120:    #8D887B;
+
+  /* Jewel Red = primary accent. CTAs, sale, alerts. */
+  --color-jewel-red:     #C92117;
+  --color-jewel-red-15:  #FCE1DF;
+  --color-jewel-red-50:  #F3BABA;
+  --color-jewel-red-70:  #EB352A;
+  --color-jewel-red-110: #A71108;
+  --color-jewel-red-120: #850800;
+
+  /* Core neutrals */
+  --color-white:       #FFFFFF;
+  --color-black:       #000000;
+  --color-gray:        #EAEAEA;
+  --color-lighter-gray:#D2D2D1;
+
+  /* Accents — use sparingly */
+  --color-teal:        #5BE9DC;
+  --color-teal-120:    #0B6060;
+  --color-sunshine:    #F9FF0D;   /* VIP perks, loyalty highlight */
+  --color-sunshine-60: #FDFFAE;
+  --color-green:       #05944F;   /* success */
+  --color-yellow:      #FFC043;   /* warning */
+  --color-blue:        #5897FB;   /* focus / info */
+
+  /* ---------- SEMANTIC TOKENS ---------- */
+  --bg-default:        var(--color-white);
+  --bg-surface:        var(--color-sand-70);
+  --bg-emphasis:       var(--color-shadow);
+  --bg-dark:           var(--color-shadow);
+  --bg-overlay:        rgba(250, 250, 250, 0.75);
+  --bg-modal-scrim:    rgba(0, 0, 0, 0.4);
+
+  --text-default:      var(--color-black);
+  --text-emphasis:     var(--color-shadow);
+  --text-muted:        var(--color-shadow-65);
+  --text-subdued:      var(--color-shadow-45);
+  --text-inverse:      var(--color-white);
+  --text-promo:        var(--color-jewel-red);
+  --text-sale:         var(--color-jewel-red-110);
+  --text-error:        var(--color-jewel-red-70);
+  --text-success:      var(--color-green);
+
+  --border-default:    var(--color-shadow-25);
+  --border-subtle:     var(--color-shadow-15);
+  --border-strong:     var(--color-black);
+  --border-focus:      var(--color-blue);
+
+  /* ---------- RADII ---------- */
+  --radius-xs:   2px;
+  --radius-sm:   4px;   /* buttons default */
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-pill: 999px;
+
+  /* ---------- SPACING (sizes.js) ---------- */
+  --sp-xxxs: 4px;
+  --sp-xxs:  8px;
+  --sp-xs:   12px;
+  --sp-sm:   12px;
+  --sp-md:   18px;
+  --sp-lg:   32px;
+  --sp-xl:   36px;
+  --sp-xxl:  40px;
+  --sp-xxxl: 48px;
+
+  /* ---------- TYPE SCALE ---------- */
+  /* Desktop / mobile. Line-heights per typography.js. */
+  --fs-display-1:  72px;  --lh-display-1:  80px;
+  --fs-display-2:  64px;  --lh-display-2:  72px;
+  --fs-h1:         48px;  --lh-h1:         56px;  /* mobile 32/40 */
+  --fs-h2:         40px;  --lh-h2:         48px;  /* mobile 28/32 */
+  --fs-h3:         28px;  --lh-h3:         32px;  /* mobile 24/32 */
+  --fs-h4:         28px;  --lh-h4:         32px;  /* mobile 20/24 */
+  --fs-h5:         24px;  --lh-h5:         32px;  /* mobile 16/24 */
+  --fs-h6:         20px;  --lh-h6:         24px;
+  --fs-h8:         14px;  --lh-h8:         24px;
+
+  --fs-p3:         18px;  --lh-p3:         24px;
+  --fs-p2:         16px;  --lh-p2:         20px;
+  --fs-p1:         14px;  --lh-p1:         18px;
+  --fs-caption:    12px;  --lh-caption:    24px;
+
+  /* ---------- SHADOWS ---------- */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 2px 6px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+/* ---------- GLOBAL DEFAULTS ---------- */
+html, body {
+  font-family: var(--font-family-base);
+  font-size: 16px;
+  color: var(--text-default);
+  background: var(--bg-default);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- TYPOGRAPHY UTILITIES ---------- */
+.t-display-1  { font-size: var(--fs-display-1); line-height: var(--lh-display-1); font-weight: 700; letter-spacing: -0.01em; }
+.t-display-2  { font-size: var(--fs-display-2); line-height: var(--lh-display-2); font-weight: 700; letter-spacing: -0.01em; }
+.t-h1         { font-size: var(--fs-h1); line-height: var(--lh-h1); font-weight: 700; }
+.t-h2         { font-size: var(--fs-h2); line-height: var(--lh-h2); font-weight: 700; }
+.t-h3         { font-size: var(--fs-h3); line-height: var(--lh-h3); font-weight: 700; }
+.t-h4         { font-size: var(--fs-h4); line-height: var(--lh-h4); font-weight: 700; }
+.t-h5         { font-size: var(--fs-h5); line-height: var(--lh-h5); font-weight: 700; }
+.t-h6         { font-size: var(--fs-h6); line-height: var(--lh-h6); font-weight: 700; }
+.t-p3         { font-size: var(--fs-p3); line-height: 1.33; }
+.t-p2         { font-size: var(--fs-p2); line-height: 1.25; }
+.t-p1         { font-size: var(--fs-p1); line-height: 1.29; }
+.t-caption    { font-size: var(--fs-caption); line-height: 1.4; }
+.t-uppercase  { text-transform: uppercase; letter-spacing: 0.06em; }
+.t-eyebrow    { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; }
+
+/* Legacy helper: Pressura Extended for display/editorial moments */
+.t-extended   { font-family: var(--font-family-extended); }
